@@ -263,9 +263,13 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 	//Cube
 	auto loadVSTask = DX::ReadDataAsync(L"SampleVertexShader.cso");
 	auto loadPSTask = DX::ReadDataAsync(L"SamplePixelShader.cso");
+
 	//Floor
-	auto loadFloorVSTask = DX::ReadDataAsync(L"FloorVertexShader.cso");
-	auto loadFloorPSTask = DX::ReadDataAsync(L"FloorPixelShader.cso");
+	//auto loadFloorVSTask = DX::ReadDataAsync(L"FloorVertexShader.cso");
+	//auto loadFloorPSTask = DX::ReadDataAsync(L"FloorPixelShader.cso");
+	//Floor with lighting
+	auto loadFloorVSTask = DX::ReadDataAsync(L"LightingVertexShader.cso");
+	auto loadFloorPSTask = DX::ReadDataAsync(L"LightingPixelShader.cso");
 
 	// After the vertex shader file is loaded, create the shader and input layout.
 	auto createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData)

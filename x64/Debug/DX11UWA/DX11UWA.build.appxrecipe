@@ -69,6 +69,12 @@
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\FloorVertexShader.cso">
       <PackagePath>FloorVertexShader.cso</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingPixelShader.cso">
+      <PackagePath>LightingPixelShader.cso</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingVertexShader.cso">
+      <PackagePath>LightingVertexShader.cso</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\resources.pri">
       <PackagePath>resources.pri</PackagePath>
     </AppxPackagedFile>

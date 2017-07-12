@@ -127,6 +127,12 @@
     <FxCompile Include="FloorPixelShader.hlsl">
       <Filter>Content\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="LightingPixelShader.hlsl">
+      <Filter>Content\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="LightingVertexShader.hlsl">
+      <Filter>Content\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Object Include="Assets\Ground.obj">
