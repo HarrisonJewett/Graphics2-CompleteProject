@@ -4,6 +4,9 @@
 #include "ShaderStructures.h"
 #include "..\Common\StepTimer.h"
 
+#include <vector>
+#include "..\Common\DDSTextureLoader.h"
+
 
 namespace DX11UWA
 {
@@ -60,6 +63,23 @@ namespace DX11UWA
 
 		// Matrix data member for the camera
 		DirectX::XMFLOAT4X4 m_camera;
+
+		//Loading Floor object
+		std::vector<VertexPositionUVNormal>  m_floorVerticies;
+		std::vector<unsigned int>		     m_floorIndicies;
+		std::vector<VertexPositionUVNormal>  m_floorVertexPositionUVNormal;
+		Microsoft::WRL::ComPtr<ID3D11Buffer> m_floorVertBuffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer> m_floorIndexBuffer;
+
+		Microsoft::WRL::ComPtr<ID3D11VertexShader>			   m_floorVertexShader;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader>			   m_floorPixelShader;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>				   m_floorConstantBuffer;
+		Microsoft::WRL::ComPtr<ID3D11InputLayout>			   m_floorInputLayout;
+		Microsoft::WRL::ComPtr<ID3D11SamplerState>			   m_floorSampleState;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	   m_floorResourceView;
+
+		ModelViewProjectionConstantBuffer	m_floorConstantBufferData;
+
 	};
 }
 

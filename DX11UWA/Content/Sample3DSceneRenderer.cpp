@@ -8,6 +8,8 @@ using namespace DX11UWA;
 using namespace DirectX;
 using namespace Windows::Foundation;
 
+bool loadObject(const char * path, std::vector <VertexPositionUVNormal> & outVertices, std::vector <unsigned int> & outIndicies);
+
 // Loads vertex and pixel shaders from files and instantiates the cube geometry.
 Sample3DSceneRenderer::Sample3DSceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
 	m_loadingComplete(false),
@@ -53,6 +55,7 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources(void)
 	XMMATRIX orientationMatrix = XMLoadFloat4x4(&orientation);
 
 	XMStoreFloat4x4(&m_constantBufferData.projection, XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
+	XMStoreFloat4x4(&m_floorConstantBufferData.projection, XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
 
 	// Eye is at (0,0.7,1.5), looking at point (0,-0.1,0) with the up-vector along the y-axis.
 	static const XMVECTORF32 eye = { 0.0f, 0.7f, -1.5f, 0.0f };
@@ -61,6 +64,9 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources(void)
 
 	XMStoreFloat4x4(&m_camera, XMMatrixInverse(nullptr, XMMatrixLookAtLH(eye, at, up)));
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
+	XMStoreFloat4x4(&m_floorConstantBufferData.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
+
+
 }
 
 // Called once per frame, rotates the cube and calculates the model and view matrices.
@@ -87,6 +93,8 @@ void Sample3DSceneRenderer::Rotate(float radians)
 {
 	// Prepare to pass the updated model matrix to the shader
 	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixRotationY(radians)));
+	XMStoreFloat4x4(&m_floorConstantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
+
 }
 
 void Sample3DSceneRenderer::UpdateCamera(DX::StepTimer const& timer, float const moveSpd, float const rotSpd)
@@ -221,7 +229,7 @@ void Sample3DSceneRenderer::Render(void)
 	// Prepare the constant buffer to send it to the graphics device.
 	context->UpdateSubresource1(m_constantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
 	// Each vertex is one instance of the VertexPositionColor struct.
-	UINT stride = sizeof(VertexPositionColor);
+	UINT stride = sizeof(VertexPositionUVNormal);
 	UINT offset = 0;
 	context->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
 	// Each index is one 16-bit unsigned integer (short).
@@ -241,8 +249,12 @@ void Sample3DSceneRenderer::Render(void)
 void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 {
 	// Load shaders asynchronously.
+	//Cube
 	auto loadVSTask = DX::ReadDataAsync(L"SampleVertexShader.cso");
 	auto loadPSTask = DX::ReadDataAsync(L"SamplePixelShader.cso");
+	//Floor
+	auto loadFloorVSTask = DX::ReadDataAsync(L"FloorVertexShader.cso");
+	auto loadFloorPSTask = DX::ReadDataAsync(L"FloorPixelShader.cso");
 
 	// After the vertex shader file is loaded, create the shader and input layout.
 	auto createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData)
@@ -258,6 +270,20 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateInputLayout(vertexDesc, ARRAYSIZE(vertexDesc), &fileData[0], fileData.size(), &m_inputLayout));
 	});
 
+	auto createFloorVSTask = loadFloorVSTask.then([this](const std::vector<byte>& fileData)
+	{
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateVertexShader(&fileData[0], fileData.size(), nullptr, &m_floorVertexShader));
+
+		static const D3D11_INPUT_ELEMENT_DESC floorVertexDesc[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "UV", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateInputLayout(floorVertexDesc, ARRAYSIZE(floorVertexDesc), &fileData[0], fileData.size(), &m_floorInputLayout));
+	});
+
 	// After the pixel shader file is loaded, create the shader and constant buffer.
 	auto createPSTask = loadPSTask.then([this](const std::vector<byte>& fileData)
 	{
@@ -267,53 +293,83 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&constantBufferDesc, nullptr, &m_constantBuffer));
 	});
 
-	// Once both shaders are loaded, create the mesh.
+	auto createFloorPSTask = loadFloorPSTask.then([this](const std::vector<byte>& fileData)
+	{
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreatePixelShader(&fileData[0], fileData.size(), nullptr, &m_floorPixelShader));
+
+		CD3D11_BUFFER_DESC floorConstantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&floorConstantBufferDesc, nullptr, &m_floorConstantBuffer));
+
+
+	});
+
 	auto createCubeTask = (createPSTask && createVSTask).then([this]()
 	{
-		// Load mesh vertices. Each vertex has a position and a color.
-		static const VertexPositionColor cubeVertices[] =
+		static const VertexPositionUVNormal cubeUV[] =
 		{
-			{XMFLOAT3(-0.5f, -0.5f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f)},
-			{XMFLOAT3(-0.5f, -0.5f,  0.5f), XMFLOAT3(0.0f, 0.0f, 1.0f)},
-			{XMFLOAT3(-0.5f,  0.5f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f)},
-			{XMFLOAT3(-0.5f,  0.5f,  0.5f), XMFLOAT3(0.0f, 1.0f, 1.0f)},
-			{XMFLOAT3( 0.5f, -0.5f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f)},
-			{XMFLOAT3( 0.5f, -0.5f,  0.5f), XMFLOAT3(1.0f, 0.0f, 1.0f)},
-			{XMFLOAT3( 0.5f,  0.5f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f)},
-			{XMFLOAT3( 0.5f,  0.5f,  0.5f), XMFLOAT3(1.0f, 1.0f, 1.0f)},
+			//Front Face
+			/*0*/{ XMFLOAT3(-0.5f, 1.0f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*1*/{ XMFLOAT3(0.5f, 1.0f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*2*/{ XMFLOAT3(-0.5f, 0.0f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*3*/{ XMFLOAT3(0.5f, 0.0f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+
+			//Right Face
+			/*4*/{ XMFLOAT3(0.5f, 1.0f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*5*/{ XMFLOAT3(0.5f, 1.0f, 0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*6*/{ XMFLOAT3(0.5f, 0.0f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*7*/{ XMFLOAT3(0.5f, 0.0f, 0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+
+			//Back Face
+			/*8*/{ XMFLOAT3(0.5f, 1.0f, 0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*9*/{ XMFLOAT3(-0.5f, 1.0f, 0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*10*/{ XMFLOAT3(0.5f, 0.0f, 0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*11*/{ XMFLOAT3(-0.5f, 0.0f, 0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+
+			//Left Face
+			/*12*/{ XMFLOAT3(-0.5f, 1.0f, 0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*13*/{ XMFLOAT3(-0.5f, 1.0f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*14*/{ XMFLOAT3(-0.5f, 0.0f, 0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*15*/{ XMFLOAT3(-0.5f, 0.0f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+
+			//Top Face
+			/*16*/{ XMFLOAT3(-0.5f, 1.0f, 0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*17*/{ XMFLOAT3(0.5f, 1.0f, 0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*18*/{ XMFLOAT3(-0.5f, 1.0f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*19*/{ XMFLOAT3(0.5f, 1.0f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+
+			//Bottom Face
+			/*20*/{ XMFLOAT3(-0.5f, 0.0f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*21*/{ XMFLOAT3(0.5f, 0.0f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*22*/{ XMFLOAT3(-0.5f, 0.0f, 0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*23*/{ XMFLOAT3(0.5f, 0.0f, 0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 		};
 
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
-		vertexBufferData.pSysMem = cubeVertices;
+		vertexBufferData.pSysMem = cubeUV;
 		vertexBufferData.SysMemPitch = 0;
 		vertexBufferData.SysMemSlicePitch = 0;
-		CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(cubeVertices), D3D11_BIND_VERTEX_BUFFER);
+		CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(cubeUV), D3D11_BIND_VERTEX_BUFFER);
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &m_vertexBuffer));
 
-		// Load mesh indices. Each trio of indices represents
-		// a triangle to be rendered on the screen.
-		// For example: 0,2,1 means that the vertices with indexes
-		// 0, 2 and 1 from the vertex buffer compose the 
-		// first triangle of this mesh.
 		static const unsigned short cubeIndices[] =
 		{
-			0,1,2, // -x
-			1,3,2,
+			0,1,3,
+			3,2,0,
 
-			4,6,5, // +x
-			5,6,7,
+			4,5,7,
+			7,6,4,
 
-			0,5,1, // -y
-			0,4,5,
+			8,9,11,
+			11,10,8,
 
-			2,7,6, // +y
-			2,3,7,
+			12,13,15,
+			15,14,12,
 
-			0,6,4, // -z
-			0,2,6,
+			16,17,19,
+			19,18,16,
 
-			1,7,3, // +z
-			1,5,7,
+			20,21,23,
+			23,22,20,
 		};
 
 		m_indexCount = ARRAYSIZE(cubeIndices);
@@ -325,6 +381,37 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		CD3D11_BUFFER_DESC indexBufferDesc(sizeof(cubeIndices), D3D11_BIND_INDEX_BUFFER);
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexBufferData, &m_indexBuffer));
 	});
+
+
+	//start FLOOR
+	bool loadFloor = loadObject("Assets/Ground.obj", m_floorVerticies, m_floorIndicies);
+
+	D3D11_SUBRESOURCE_DATA floorVertBuffData = { 0 };
+
+	floorVertBuffData.pSysMem = m_floorVerticies.data();
+	floorVertBuffData.SysMemPitch = 0;
+	floorVertBuffData.SysMemSlicePitch = 0;
+	CD3D11_BUFFER_DESC floorVertBuffDesc(sizeof(VertexPositionUVNormal) * m_floorVerticies.size(), D3D11_BIND_VERTEX_BUFFER);
+	DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&floorVertBuffDesc, &floorVertBuffData, &m_floorVertBuffer));
+
+	D3D11_SUBRESOURCE_DATA floorIndexBuffData = { 0 };
+
+	floorIndexBuffData.pSysMem = m_floorIndicies.data();
+	floorIndexBuffData.SysMemPitch = 0;
+	floorIndexBuffData.SysMemSlicePitch = 0;
+	CD3D11_BUFFER_DESC floorIndexBuffDesc(sizeof(unsigned int) * m_floorIndicies.size(), D3D11_BIND_INDEX_BUFFER);
+	DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&floorIndexBuffDesc, &floorIndexBuffData, &m_floorIndexBuffer));
+
+	D3D11_SAMPLER_DESC floorTextureSampler;
+	ZeroMemory(&floorTextureSampler, sizeof(floorTextureSampler));
+	floorTextureSampler.Filter = D3D11_FILTER_MIN_LINEAR_MAG_POINT_MIP_LINEAR;
+	floorTextureSampler.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
+	floorTextureSampler.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
+	floorTextureSampler.AddressW = D3D11_TEXTURE_ADDRESS_MIRROR;
+
+	DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateSamplerState(&floorTextureSampler, &m_floorSampleState));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_deviceResources->GetD3DDevice(), L"Assets/Ground.dds", NULL, &m_floorResourceView));
+	//END FLOOR
 
 	// Once the cube is loaded, the object is ready to be rendered.
 	createCubeTask.then([this]()
@@ -342,4 +429,83 @@ void Sample3DSceneRenderer::ReleaseDeviceDependentResources(void)
 	m_constantBuffer.Reset();
 	m_vertexBuffer.Reset();
 	m_indexBuffer.Reset();
+
+	//floor
+	m_floorVertBuffer.Reset();
+	m_floorConstantBuffer.Reset();
+}
+
+#pragma warning(disable:4996)
+bool loadObject(const char * path, std::vector <VertexPositionUVNormal> & outVertices, std::vector <unsigned int> & outIndicies)
+{
+	std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
+	std::vector<XMFLOAT3> tempVerts;
+	std::vector<XMFLOAT3> tempUVs;
+	std::vector<XMFLOAT3> tempNormals;
+
+	FILE * file = fopen(path, "r");
+	if (!file)
+		return false;
+
+	while (true)
+	{
+		char line[128];
+		int endCheck = fscanf(file, "%s", line);
+		if (endCheck == EOF)
+			break;
+		if (strcmp(line, "v") == 0)
+		{
+			XMFLOAT3 vertex;
+			fscanf_s(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
+			tempVerts.push_back(vertex);
+		}
+		else if (strcmp(line, "vt") == 0)
+		{
+			XMFLOAT3 uv;
+			fscanf_s(file, "%f %f\n", &uv.x, &uv.y);
+			uv.y = 1 - uv.y;
+			tempUVs.push_back(uv);
+		}
+		else if (strcmp(line, "vn") == 0)
+		{
+			XMFLOAT3 norm;
+			fscanf_s(file, "%f %f %f\n", &norm.x, &norm.y, &norm.z);
+			tempNormals.push_back(norm);
+		}
+		else if (strcmp(line, "f") == 0)
+		{
+			std::string v1, v2, v3;
+			UINT vIndex[3], uvIndex[3], normIndex[3];
+			int check = fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vIndex[0], &uvIndex[0], &normIndex[0], &vIndex[1], &uvIndex[1], &normIndex[1], &vIndex[2], &uvIndex[2], &normIndex[2]);
+			if (check != 9)
+				return false;
+			vertexIndices.push_back(vIndex[0]);
+			vertexIndices.push_back(vIndex[1]);
+			vertexIndices.push_back(vIndex[2]);
+			uvIndices.push_back(uvIndex[0]);
+			uvIndices.push_back(uvIndex[1]);
+			uvIndices.push_back(uvIndex[2]);
+			normalIndices.push_back(normIndex[0]);
+			normalIndices.push_back(normIndex[1]);
+			normalIndices.push_back(normIndex[2]);
+		}
+	}
+
+	for (UINT i = 0; i < vertexIndices.size(); i++)
+	{
+		VertexPositionUVNormal temp;
+		UINT vertInd = vertexIndices[i];
+		temp.pos = tempVerts[vertInd - 1];
+
+		UINT UVInd = uvIndices[i];
+		temp.uv = tempUVs[UVInd - 1];
+
+		UINT normInd = normalIndices[i];
+		temp.normal = tempNormals[normInd - 1];
+
+		outVertices.push_back(temp);
+		outIndicies.push_back(i);
+	}
+
+	return true;
 }

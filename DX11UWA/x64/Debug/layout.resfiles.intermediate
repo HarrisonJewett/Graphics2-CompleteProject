@@ -1,0 +1,13 @@
+Assets\Ground.dds
+Assets\Ground.obj
+Assets\LockScreenLogo.scale-200.png
+Assets\SplashScreen.scale-200.png
+Assets\Square150x150Logo.scale-200.png
+Assets\Square44x44Logo.scale-200.png
+Assets\Square44x44Logo.targetsize-24_altform-unplated.png
+Assets\StoreLogo.png
+Assets\Wide310x150Logo.scale-200.png
+FloorPixelShader.cso
+FloorVertexShader.cso
+SamplePixelShader.cso
+SampleVertexShader.cso

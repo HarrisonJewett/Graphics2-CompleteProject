@@ -17,6 +17,7 @@ struct VertexShaderInput
 struct PixelShaderInput
 {
 	float4 pos : SV_POSITION;
+	float3 WPos : W_POSITION;
 	float3 uv : UV;
 };
 
@@ -28,6 +29,7 @@ PixelShaderInput main(VertexShaderInput input)
 
 	// Transform the vertex position into projected space.
 	pos = mul(pos, model);
+	output.WPos = pos;
 	pos = mul(pos, view);
 	pos = mul(pos, projection);
 	output.pos = pos;
