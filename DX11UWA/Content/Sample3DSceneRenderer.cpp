@@ -48,7 +48,7 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources(void)
 	// this transform should not be applied.
 
 	// This sample makes use of a right-handed coordinate system using row-major matrices.
-	XMMATRIX perspectiveMatrix = XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, 0.01f, 100.0f);
+	XMMATRIX perspectiveMatrix = XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, 0.01f, 200.0f);
 
 	XMFLOAT4X4 orientation = m_deviceResources->GetOrientationTransform3D();
 
@@ -56,6 +56,7 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources(void)
 
 	XMStoreFloat4x4(&m_constantBufferData.projection, XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
 	XMStoreFloat4x4(&m_floorConstantBufferData.projection, XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
+
 
 	// Eye is at (0,0.7,1.5), looking at point (0,-0.1,0) with the up-vector along the y-axis.
 	static const XMVECTORF32 eye = { 0.0f, 0.7f, -1.5f, 0.0f };
@@ -65,8 +66,6 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources(void)
 	XMStoreFloat4x4(&m_camera, XMMatrixInverse(nullptr, XMMatrixLookAtLH(eye, at, up)));
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
 	XMStoreFloat4x4(&m_floorConstantBufferData.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
-
-
 }
 
 // Called once per frame, rotates the cube and calculates the model and view matrices.
@@ -223,11 +222,31 @@ void Sample3DSceneRenderer::Render(void)
 
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
+	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
+
+	//Sky
+	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixScaling(100.0f, 100.0f, 100.0f));
+	context->UpdateSubresource1(m_skyBoxConstantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
+	UINT stride = sizeof(Sky);
+	UINT offset = 0;
+	context->IASetVertexBuffers(0, 1, m_skyBoxVertexBuffer.GetAddressOf(), &stride, &offset);
+	context->IASetIndexBuffer(m_skyBoxIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->IASetInputLayout(m_skyBoxInput.Get());
+	context->VSSetShader(m_skyBoxVS.Get(), nullptr, 0);
+	context->VSSetConstantBuffers1(0, 1, m_skyBoxConstantBuffer.GetAddressOf(), nullptr, nullptr);
+	context->PSSetShader(m_skyBoxPS.Get(), nullptr, 0);
+	context->PSSetShaderResources(0, 1, m_skyBoxResourceView.GetAddressOf());
+	context->DrawIndexed(m_skyICount, 0, 0);
+
 	//UV Cube
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
+	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+
+
 	context->UpdateSubresource1(m_constantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
-	UINT stride = sizeof(VertexPositionUVNormal);
-	UINT offset = 0;
+	stride = sizeof(VertexPositionUVNormal);
+	offset = 0;
 	context->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
 	context->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -317,6 +336,96 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 
 
 	});
+
+	//----------------CREATING SKYBOX-------------------//
+
+	auto loadVSSkyTask = DX::ReadDataAsync(L"SkyVertexShader.cso");
+
+	auto createSkyVSTask = loadVSSkyTask.then([this](const std::vector<byte>& fileData)
+	{
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateVertexShader(&fileData[0], fileData.size(), nullptr, &m_skyBoxVS));
+
+		static const D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateInputLayout(vertexDesc, ARRAYSIZE(vertexDesc), &fileData[0], fileData.size(), &m_skyBoxInput));
+	});
+
+	auto loadPSSkyTask = DX::ReadDataAsync(L"SkyPixelShader.cso");
+
+	auto createSkyPSTask = loadPSSkyTask.then([this](const std::vector<byte>& fileData)
+	{
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreatePixelShader(&fileData[0], fileData.size(), nullptr, &m_skyBoxPS));
+
+		CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
+
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&constantBufferDesc, nullptr, &m_skyBoxConstantBuffer));
+	});
+
+	auto createSkyBox = (createSkyVSTask && createSkyPSTask).then([this]()
+	{
+		static const Sky skyBox[] =
+		{
+			{ XMFLOAT3(-1.0f, -1.0f, -1.0f) },
+			{ XMFLOAT3(-1.0f, -1.0f,  1.0f) },
+			{ XMFLOAT3(-1.0f,  1.0f, -1.0f) },
+			{ XMFLOAT3(-1.0f,  1.0f,  1.0f) },
+			{ XMFLOAT3(1.0f, -1.0f, -1.0f) },
+			{ XMFLOAT3(1.0f, -1.0f,  1.0f) },
+			{ XMFLOAT3(1.0f,  1.0f, -1.0f) },
+			{ XMFLOAT3(1.0f,  1.0f,  1.0f) },
+		};
+
+		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
+		vertexBufferData.pSysMem = skyBox;
+		vertexBufferData.SysMemPitch = 0;
+		vertexBufferData.SysMemSlicePitch = 0;
+		CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(skyBox), D3D11_BIND_VERTEX_BUFFER);
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &m_skyBoxVertexBuffer));
+
+		static const unsigned short Indices[] =
+		{
+			3,7,5,
+			5,1,3,
+
+			7,6,4,
+			4,5,7,
+
+			6,2,0,
+			0,4,6,
+
+			2,3,1,
+			1,0,2,
+
+			2,6,7,
+			7,3,2,
+
+			5,4,0,
+			0,1,5,
+		};
+
+		D3D11_SAMPLER_DESC sampleDesc;
+		ZeroMemory(&sampleDesc, sizeof(sampleDesc));
+		sampleDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		sampleDesc.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
+		sampleDesc.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
+		sampleDesc.AddressW = D3D11_TEXTURE_ADDRESS_MIRROR;
+
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_deviceResources->GetD3DDevice(), L"Assets/SkyboxOcean.dds", NULL, m_skyBoxResourceView.GetAddressOf()));
+
+		m_skyICount = ARRAYSIZE(Indices);
+
+		D3D11_SUBRESOURCE_DATA indexBufferData = { 0 };
+		indexBufferData.pSysMem = Indices;
+		indexBufferData.SysMemPitch = 0;
+		indexBufferData.SysMemSlicePitch = 0;
+		CD3D11_BUFFER_DESC indexBufferDesc(sizeof(Indices), D3D11_BIND_INDEX_BUFFER);
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexBufferData, m_skyBoxIndexBuffer.GetAddressOf()));
+
+	});
+
+	//-----------------END SKYBOX-----------------------//
 
 	auto createCubeTask = (createPSTask && createVSTask).then([this]()
 	{

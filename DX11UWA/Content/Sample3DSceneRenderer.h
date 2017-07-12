@@ -70,15 +70,23 @@ namespace DX11UWA
 		std::vector<VertexPositionUVNormal>  m_floorVertexPositionUVNormal;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_floorVertBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_floorIndexBuffer;
-
 		Microsoft::WRL::ComPtr<ID3D11VertexShader>			   m_floorVertexShader;
 		Microsoft::WRL::ComPtr<ID3D11PixelShader>			   m_floorPixelShader;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>				   m_floorConstantBuffer;
 		Microsoft::WRL::ComPtr<ID3D11InputLayout>			   m_floorInputLayout;
 		Microsoft::WRL::ComPtr<ID3D11SamplerState>			   m_floorSampleState;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	   m_floorResourceView;
-
 		ModelViewProjectionConstantBuffer	m_floorConstantBufferData;
+
+		//Skybox
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_skyBoxResourceView;
+		Microsoft::WRL::ComPtr<ID3D11InputLayout>		 m_skyBoxInput;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>			 m_skyBoxVertexBuffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>			 m_skyBoxIndexBuffer;
+		Microsoft::WRL::ComPtr<ID3D11VertexShader>		 m_skyBoxVS;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader>		 m_skyBoxPS;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>			 m_skyBoxConstantBuffer;
+		uint32 m_skyICount;
 
 	};
 }

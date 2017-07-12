@@ -27,6 +27,9 @@
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Ground.dds">
       <PackagePath>Assets\Ground.dds</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\SkyboxOcean.dds">
+      <PackagePath>Assets\SkyboxOcean.dds</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
     </AppxPackagedFile>
@@ -74,6 +77,12 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingVertexShader.cso">
       <PackagePath>LightingVertexShader.cso</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyPixelShader.cso">
+      <PackagePath>SkyPixelShader.cso</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyVertexShader.cso">
+      <PackagePath>SkyVertexShader.cso</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\resources.pri">
       <PackagePath>resources.pri</PackagePath>

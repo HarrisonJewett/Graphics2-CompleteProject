@@ -48,10 +48,10 @@ float4 pLight(PixelShaderInput input) {
 	wPos = mul(wPos, lightMovementY);
 
 	lightPos.x = 0.0f - wPos.x;
-	lightPos.y = 0.0f - wPos.y;
-	lightPos.z = 2.0f - wPos.z;
+	lightPos.y = 1.0f - wPos.y;
+	lightPos.z = 3.0f - wPos.z;
 	float mag = sqrt(lightPos.x*lightPos.x + lightPos.y*lightPos.y + lightPos.z*lightPos.z);
-	float atenuation = 1.5f - saturate(mag / 10.0f);
+	float atenuation = 2.0f - saturate(mag / 10.0f);
 	float3 lightDir = normalize(lightPos);
 	float lightRatio = saturate(dot(normalize(lightDir), input.normal));
 	float3 Color = { 0.2f, 0.75f, 0.2f };
@@ -71,8 +71,8 @@ float4 spot(PixelShaderInput input)
 
 	wPos = mul(wPos, lightMovementY);
 
-	lightPos.x = 7.0f - wPos.x;
-	lightPos.y = 0.0f - wPos.y;
+	lightPos.x = 0.0f - wPos.x;
+	lightPos.y = 1.0f - wPos.y;
 	lightPos.z = 0.0f - wPos.z;
 
 
@@ -96,7 +96,7 @@ float4 spot(PixelShaderInput input)
 	float lightRatio = saturate(dot(normalize(lightDir), input.normal));
 
 
-	float3 Color = { 0.5f, 0.0f, 0.5f };
+	float3 Color = { 0.0f, 0.0f, 0.75f };
 	float4 temp = float4(Color, 1.0f)*lightRatio*spotFactor;
 	return temp;
 }
@@ -105,9 +105,9 @@ float4 main(PixelShaderInput input) : sv_target
 {
 	float4 dl = directional(input);
 	float4 pl = pLight(input);
-	//float4 sl = spot(input);
+	float4 sl = spot(input);
 	float4 modelColor = base.Sample(samp, input.uv);	
-	float4 sum = dl + pl; //+ sl;
+	float4 sum = dl + pl; //+ sl
 	return modelColor * sum;
 	float4 temp = spot(input);
 

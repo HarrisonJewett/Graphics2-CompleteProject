@@ -107,12 +107,16 @@
     <Image Include="Assets\Ground.dds">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\SkyboxOcean.dds">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DX11UWA_TemporaryKey.pfx" />
+    <None Include="Assets\Ground.obj" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Content\SamplePixelShader.hlsl">
@@ -133,10 +137,11 @@
     <FxCompile Include="LightingVertexShader.hlsl">
       <Filter>Content\Shaders</Filter>
     </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="Assets\Ground.obj">
-      <Filter>Assets</Filter>
-    </Object>
+    <FxCompile Include="SkyVertexShader.hlsl">
+      <Filter>Content\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="SkyPixelShader.hlsl">
+      <Filter>Content\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
