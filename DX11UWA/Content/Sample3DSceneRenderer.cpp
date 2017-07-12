@@ -223,27 +223,38 @@ void Sample3DSceneRenderer::Render(void)
 
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
+	//UV Cube
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
-
-
-	// Prepare the constant buffer to send it to the graphics device.
 	context->UpdateSubresource1(m_constantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
-	// Each vertex is one instance of the VertexPositionColor struct.
 	UINT stride = sizeof(VertexPositionUVNormal);
 	UINT offset = 0;
 	context->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
-	// Each index is one 16-bit unsigned integer (short).
 	context->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	context->IASetInputLayout(m_inputLayout.Get());
-	// Attach our vertex shader.
 	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
-	// Send the constant buffer to the graphics device.
 	context->VSSetConstantBuffers1(0, 1, m_constantBuffer.GetAddressOf(), nullptr, nullptr);
-	// Attach our pixel shader.
 	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
-	// Draw the objects.
 	context->DrawIndexed(m_indexCount, 0, 0);
+
+	//Floor
+	XMStoreFloat4x4(&m_floorConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(0.0f, -2.0f, 0.0f))));
+
+	XMStoreFloat4x4(&m_floorConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
+
+	context->UpdateSubresource1(m_floorConstantBuffer.Get(), 0, NULL, &m_floorConstantBufferData, 0, 0, 0);
+	stride = sizeof(VertexPositionUVNormal);
+	offset = 0;
+	context->IASetVertexBuffers(0, 1, m_floorVertBuffer.GetAddressOf(), &stride, &offset);
+	context->IASetIndexBuffer(m_floorIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->IASetInputLayout(m_floorInputLayout.Get());
+	context->VSSetShader(m_floorVertexShader.Get(), nullptr, 0);
+	context->VSSetConstantBuffers1(0, 1, m_floorConstantBuffer.GetAddressOf(), nullptr, nullptr);
+	context->PSSetShader(m_floorPixelShader.Get(), nullptr, 0);
+	context->PSSetShaderResources(0, 1, m_floorResourceView.GetAddressOf());
+	context->PSSetSamplers(0, 1, m_floorSampleState.GetAddressOf());
+	context->DrawIndexed(m_floorIndicies.size(), 0, 0);
 }
 
 void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
