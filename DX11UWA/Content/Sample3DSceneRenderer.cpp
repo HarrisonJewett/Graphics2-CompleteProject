@@ -169,7 +169,12 @@ void Sample3DSceneRenderer::UpdateCamera(DX::StepTimer const& timer, float const
 	if (m_kbuttons['9'])
 	{
 		//toggle viewport
-		multipleViewports = !multipleViewports;
+		multipleViewports = true;
+	}
+	if (m_kbuttons['0'])
+	{
+		//toggle viewport
+		multipleViewports = false;
 	}
 
 	if (m_currMousePos) 

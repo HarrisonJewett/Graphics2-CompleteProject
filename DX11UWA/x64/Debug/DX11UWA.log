@@ -1,36 +1,6 @@
-﻿  compilation object save succeeded; see E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SamplePixelShader.cso
-E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Content\SampleVertexShader.hlsl(32,2-18): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SampleVertexShader.cso
-E:\Projects\Round 2\Project\DX11UWA\DX11UWA\FloorPixelShader.hlsl(13,16-42): warning X3206: 'Sample': implicit truncation of vector type
-E:\Projects\Round 2\Project\DX11UWA\DX11UWA\FloorPixelShader.hlsl(16,18-30): warning X3081: comma expression used where a vector constructor may have been intended
-E:\Projects\Round 2\Project\DX11UWA\DX11UWA\FloorPixelShader.hlsl(16,18-42): warning X3081: potentially unintended use of a comma expression in a variable initializer
-  
-  compilation object save succeeded; see E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\FloorPixelShader.cso
-  compilation object save succeeded; see E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\FloorVertexShader.cso
-E:\Projects\Round 2\Project\DX11UWA\DX11UWA\LightingPixelShader.hlsl(96,8-49): warning X3206: implicit truncation of vector type
-E:\Projects\Round 2\Project\DX11UWA\DX11UWA\LightingPixelShader.hlsl(111,22-48): warning X3206: 'Sample': implicit truncation of vector type
-  
-  compilation object save succeeded; see E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingPixelShader.cso
-E:\Projects\Round 2\Project\DX11UWA\DX11UWA\LightingVertexShader.hlsl(45,21-30): warning X3081: comma expression used where a vector constructor may have been intended
-E:\Projects\Round 2\Project\DX11UWA\DX11UWA\LightingVertexShader.hlsl(45,21-36): warning X3081: comma expression used where a vector constructor may have been intended
-E:\Projects\Round 2\Project\DX11UWA\DX11UWA\LightingVertexShader.hlsl(46,21-30): warning X3081: comma expression used where a vector constructor may have been intended
-E:\Projects\Round 2\Project\DX11UWA\DX11UWA\LightingVertexShader.hlsl(46,21-36): warning X3081: comma expression used where a vector constructor may have been intended
-  
-  compilation object save succeeded; see E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingVertexShader.cso
-  compilation object save succeeded; see E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyPixelShader.cso
-E:\Projects\Round 2\Project\DX11UWA\DX11UWA\SkyVertexShader.hlsl(20,21-46): warning X3578: Output value 'main' is not completely initialized
-  
-  compilation object save succeeded; see E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyVertexShader.cso
-  pch.cpp
-  App.cpp
-  DDSTextureLoader.cpp
-  DeviceResources.cpp
-  DX11UWAMain.cpp
-  SampleFpsTextRenderer.cpp
-  Sample3DSceneRenderer.cpp
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(321): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(570): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(578): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+﻿  Sample3DSceneRenderer.cpp
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(326): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(575): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(583): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
   DX11UWA.vcxproj -> E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe
   DX11UWA.vcxproj -> E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.pdb (Partial PDB)
