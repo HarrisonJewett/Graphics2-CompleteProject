@@ -27,8 +27,14 @@
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Ground.dds">
       <PackagePath>Assets\Ground.dds</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\iceCastleTexture.dds">
+      <PackagePath>Assets\iceCastleTexture.dds</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\SkyboxOcean.dds">
       <PackagePath>Assets\SkyboxOcean.dds</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\wolfBlack.dds">
+      <PackagePath>Assets\wolfBlack.dds</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
@@ -59,6 +65,12 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Ground.obj">
       <PackagePath>Assets\Ground.obj</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Howling_Wolf.obj">
+      <PackagePath>Assets\Howling_Wolf.obj</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\icyCastle.obj">
+      <PackagePath>Assets\icyCastle.obj</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SamplePixelShader.cso">
       <PackagePath>SamplePixelShader.cso</PackagePath>

@@ -28,14 +28,13 @@ float4 directional(PixelShaderInput input)
 		sin(input.lightVal.x), cos(input.lightVal.x),0.0f,
 		0.0f,0.0f,1.0f };
 	float3 lightDirection = { 3.0f, -1.0f, 0.0f };
-	//lightDirection.x -= input.worldPos.x;
-	//lightDirection.y -= input.worldPos.y;
-	//lightDirection.z -= input.worldPos.z;
-	//lightDirection = mul(lightDirection, lightMovementZ);
-	input.normal = normalize(input.normal);
+	lightDirection.x -= input.worldPos.x;
+	lightDirection.y -= input.worldPos.y;
+	lightDirection.z -= input.worldPos.z;
+	lightDirection = mul(lightDirection, lightMovementZ);
+	//input.normal = normalize(input.normal);
 	float lightRatio = saturate(dot(normalize(-lightDirection), input.normal));
-	float3 color = { 0.5f, 0.1f, 0.1f };
-	//need surface color
+	float3 color = { 0.75f, 0.0f, 0.0f };
 	float4 temp = float4(color, 1.0f) * lightRatio;
 	return temp;
 }
@@ -56,7 +55,7 @@ float4 pLight(PixelShaderInput input) {
 	float atenuation = 2.0f - saturate(mag / 10.0f);
 	float3 lightDir = normalize(lightPos);
 	float lightRatio = saturate(dot(normalize(lightDir), input.normal));
-	float3 Color = { 0.2f, 0.75f, 0.2f };
+	float3 Color = { 0.0f, 0.75f, 0.0f };
 	float4 temp = float4(Color, 1.0f)*lightRatio*atenuation;
 	return temp;
 }
@@ -73,12 +72,16 @@ float4 spot(PixelShaderInput input)
 
 	wPos = mul(wPos, lightMovementY);
 
-	lightPos.x = 0.0f - wPos.x;
-	lightPos.y = 1.0f - wPos.y;
-	lightPos.z = 0.0f - wPos.z;
+	lightPos = 0 - wPos;
+	lightPos.x += 10.0f;
+	lightPos.z -= 2.0f;
+	lightPos.y += 4.0f;
+	/*= 0.0f - wPos.x;
+	lightPos.y = 2.0f - wPos.y;
+	lightPos.z = 2.0f - wPos.z;*/
 
 
-	float3 Cone = { 0.0f, -1.0f, 0.0f };
+	float3 Cone = { 1.0f, -4.0f, 1.0f };
 	float3x3 lightMovementZ = {
 		cos(input.lightVal.x),-sin(input.lightVal.x),0.0f,
 		sin(input.lightVal.x), cos(input.lightVal.x),0.0f,
@@ -106,13 +109,9 @@ float4 spot(PixelShaderInput input)
 float4 main(PixelShaderInput input) : sv_target
 {
 	float4 dl = directional(input);
-	//float4 pl = pLight(input);
-	//float4 sl = spot(input);
+	float4 pl = pLight(input);
+	float4 sl = spot(input);
 	float4 modelColor = base.Sample(samp, input.uv);	
-	float4 sum = dl ; //pl + sl
+	float4 sum = dl + pl + sl; //pl + sl
 	return modelColor * sum;
-	//float4 temp = spot(input);
-
-	//float4 temp = directional(input) + pLight(input);
-	//return temp;
 }

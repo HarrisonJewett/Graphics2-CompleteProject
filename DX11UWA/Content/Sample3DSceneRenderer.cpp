@@ -362,7 +362,7 @@ void Sample3DSceneRenderer::postRender(ID3D11DeviceContext3 * context)
 	//context->DrawIndexed(m_indexCount, 0, 0);
 
 	//Floor
-	XMStoreFloat4x4(&m_floorConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(0.0f, -2.0f, 0.0f))));
+	XMStoreFloat4x4(&m_floorConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(0.0f, -2.0f, 2.0f))));
 
 	XMStoreFloat4x4(&m_floorConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
 
@@ -620,7 +620,7 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 
 
 	//start FLOOR
-	bool loadFloor = loadObject("Assets/Ground.obj", m_floorVerticies, m_floorIndicies);
+	bool loadFloor = loadObject("Assets/icyCastle.obj", m_floorVerticies, m_floorIndicies);
 
 	D3D11_SUBRESOURCE_DATA floorVertBuffData = { 0 };
 
@@ -646,7 +646,7 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 	floorTextureSampler.AddressW = D3D11_TEXTURE_ADDRESS_MIRROR;
 
 	DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateSamplerState(&floorTextureSampler, &m_floorSampleState));
-	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_deviceResources->GetD3DDevice(), L"Assets/Ground.dds", NULL, &m_floorResourceView));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_deviceResources->GetD3DDevice(), L"Assets/iceCastleTexture.dds", NULL, &m_floorResourceView));
 	//END FLOOR
 
 	// Once the cube is loaded, the object is ready to be rendered.

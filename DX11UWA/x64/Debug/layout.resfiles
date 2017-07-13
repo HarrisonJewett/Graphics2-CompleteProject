@@ -1,5 +1,8 @@
 Assets\Ground.dds
 Assets\Ground.obj
+Assets\Howling_Wolf.obj
+Assets\iceCastleTexture.dds
+Assets\icyCastle.obj
 Assets\LockScreenLogo.scale-200.png
 Assets\SkyboxOcean.dds
 Assets\SplashScreen.scale-200.png
@@ -8,6 +11,7 @@ Assets\Square44x44Logo.scale-200.png
 Assets\Square44x44Logo.targetsize-24_altform-unplated.png
 Assets\StoreLogo.png
 Assets\Wide310x150Logo.scale-200.png
+Assets\wolfBlack.dds
 FloorPixelShader.cso
 FloorVertexShader.cso
 LightingPixelShader.cso

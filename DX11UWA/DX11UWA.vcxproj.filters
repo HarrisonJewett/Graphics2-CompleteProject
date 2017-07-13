@@ -110,6 +110,12 @@
     <Image Include="Assets\SkyboxOcean.dds">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\wolfBlack.dds">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\iceCastleTexture.dds">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -143,5 +149,13 @@
     <FxCompile Include="SkyPixelShader.hlsl">
       <Filter>Content\Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Assets\Howling_Wolf.obj">
+      <Filter>Assets</Filter>
+    </Object>
+    <Object Include="Assets\icyCastle.obj">
+      <Filter>Assets</Filter>
+    </Object>
   </ItemGroup>
 </Project>

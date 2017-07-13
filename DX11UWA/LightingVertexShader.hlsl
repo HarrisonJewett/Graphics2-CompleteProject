@@ -30,6 +30,7 @@ PixelShaderInput main(VertexShaderInput input)
 	float4 pos = float4(input.pos, 1.0f);
 
 	pos = mul(pos, model);
+	output.worldPos = pos;
 	pos = mul(pos, view);
 	pos = mul(pos, projection);
 	output.pos = pos;
@@ -42,7 +43,6 @@ PixelShaderInput main(VertexShaderInput input)
 
 	//position transformed by model matrix
 	//position padded with a 1 in the w
-	output.worldPos = (0.0f, 0.0f, 0.0f);
 	output.lightVal = (1.0f, 1.0f, 1.0f);
 
 	return output;

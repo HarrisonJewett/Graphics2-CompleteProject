@@ -22,13 +22,13 @@
     <AppXManifest Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-07-13T20:42:24.865</Modified>
+      <Modified>2017-07-13T22:18:25.587</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe">
       <PackagePath>DX11UWA.exe</PackagePath>
-      <Modified>2017-07-13T21:40:55.638</Modified>
+      <Modified>2017-07-13T22:19:17.269</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.winmd">
       <PackagePath>DX11UWA.winmd</PackagePath>
@@ -38,8 +38,16 @@
       <PackagePath>Assets\Ground.dds</PackagePath>
       <Modified>2017-07-12T00:04:43.209</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\iceCastleTexture.dds">
+      <PackagePath>Assets\iceCastleTexture.dds</PackagePath>
+      <Modified>2017-06-22T22:37:33.862</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\SkyboxOcean.dds">
       <PackagePath>Assets\SkyboxOcean.dds</PackagePath>
+      <Modified>2017-06-21T03:44:36.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\wolfBlack.dds">
+      <PackagePath>Assets\wolfBlack.dds</PackagePath>
       <Modified>2017-06-21T03:44:36.000</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\LockScreenLogo.scale-200.png">
@@ -80,6 +88,14 @@
       <PackagePath>Assets\Ground.obj</PackagePath>
       <Modified>2017-07-11T23:54:36.266</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Howling_Wolf.obj">
+      <PackagePath>Assets\Howling_Wolf.obj</PackagePath>
+      <Modified>2017-06-21T03:44:36.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\icyCastle.obj">
+      <PackagePath>Assets\icyCastle.obj</PackagePath>
+      <Modified>2017-06-22T22:37:33.879</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SamplePixelShader.cso">
       <PackagePath>SamplePixelShader.cso</PackagePath>
       <Modified>2017-07-13T20:42:18.910</Modified>
@@ -98,11 +114,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingPixelShader.cso">
       <PackagePath>LightingPixelShader.cso</PackagePath>
-      <Modified>2017-07-13T20:42:19.140</Modified>
+      <Modified>2017-07-13T22:37:05.549</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingVertexShader.cso">
       <PackagePath>LightingVertexShader.cso</PackagePath>
-      <Modified>2017-07-13T20:42:19.197</Modified>
+      <Modified>2017-07-13T22:24:22.565</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyPixelShader.cso">
       <PackagePath>SkyPixelShader.cso</PackagePath>
@@ -114,7 +130,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2017-07-13T20:42:24.813</Modified>
+      <Modified>2017-07-13T22:18:25.540</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
