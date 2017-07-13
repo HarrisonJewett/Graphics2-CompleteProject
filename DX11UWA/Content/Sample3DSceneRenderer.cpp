@@ -34,6 +34,30 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources(void)
 	float aspectRatio = outputSize.Width / outputSize.Height;
 	float fovAngleY = 70.0f * XM_PI / 180.0f;
 
+	m_vp1 = new D3D11_VIEWPORT();
+	m_vp1->Height = outputSize.Height;
+	m_vp1->Width = outputSize.Width / 2;
+	m_vp1->MinDepth = 0.0f;
+	m_vp1->MaxDepth = 0.1f;
+	m_vp1->TopLeftX = 0.0f;
+	m_vp1->TopLeftY = 0.0f;
+
+	m_vp2 = new D3D11_VIEWPORT();
+	m_vp2->Height = outputSize.Height;
+	m_vp2->Width = outputSize.Width / 2;
+	m_vp2->MinDepth = 0.0f;
+	m_vp2->MaxDepth = 0.1f;
+	m_vp2->TopLeftX = outputSize.Width / 2;
+	m_vp2->TopLeftY = 0.0f;
+
+	m_vp3 = new D3D11_VIEWPORT();
+	m_vp3->Height = outputSize.Height;
+	m_vp3->Width = outputSize.Width;
+	m_vp3->MinDepth = 0.0f;
+	m_vp3->MaxDepth = 0.1f;
+	m_vp3->TopLeftX = 0.0f;
+	m_vp3->TopLeftY = 0.0f;
+
 	// This is a simple example of change that can be made when the app is in
 	// portrait or snapped view.
 	if (aspectRatio < 1.0f)
@@ -142,6 +166,11 @@ void Sample3DSceneRenderer::UpdateCamera(DX::StepTimer const& timer, float const
 		XMMATRIX result = XMMatrixMultiply(translation, temp_camera);
 		XMStoreFloat4x4(&m_camera, result);
 	}
+	if (m_kbuttons['9'])
+	{
+		//toggle viewport
+		multipleViewports = !multipleViewports;
+	}
 
 	if (m_currMousePos) 
 	{
@@ -219,9 +248,25 @@ void Sample3DSceneRenderer::Render(void)
 	{
 		return;
 	}
-
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
+	if (multipleViewports)
+	{
+		context->RSSetViewports(1, m_vp1);
+		postRender(context);
+
+		context->RSSetViewports(1, m_vp2);
+		postRender(context);
+	}
+	else
+	{
+		context->RSSetViewports(1, m_vp3);
+		postRender(context);
+	}
+}
+
+void Sample3DSceneRenderer::postRender(ID3D11DeviceContext3 * context)
+{
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
 
 	//Sky
@@ -254,7 +299,7 @@ void Sample3DSceneRenderer::Render(void)
 	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
 	context->VSSetConstantBuffers1(0, 1, m_constantBuffer.GetAddressOf(), nullptr, nullptr);
 	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
-	context->DrawIndexed(m_indexCount, 0, 0);
+	//context->DrawIndexed(m_indexCount, 0, 0);
 
 	//Floor
 	XMStoreFloat4x4(&m_floorConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(0.0f, -2.0f, 0.0f))));
@@ -280,8 +325,12 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 {
 	// Load shaders asynchronously.
 	//Cube
-	auto loadVSTask = DX::ReadDataAsync(L"SampleVertexShader.cso");
-	auto loadPSTask = DX::ReadDataAsync(L"SamplePixelShader.cso");
+	//Normal
+	//auto loadVSTask = DX::ReadDataAsync(L"SampleVertexShader.cso");
+	//auto loadPSTask = DX::ReadDataAsync(L"SamplePixelShader.cso");
+	//Attempting lighting on cube. Currently give weird green lines
+	auto loadVSTask = DX::ReadDataAsync(L"LightingVertexShader.cso");
+	auto loadPSTask = DX::ReadDataAsync(L"LightingPixelShader.cso");
 
 	//Floor
 	//auto loadFloorVSTask = DX::ReadDataAsync(L"FloorVertexShader.cso");
@@ -299,6 +348,9 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "UV", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			//testing. Lets the code build and run while the cube uses the lighting shaders
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			//end testing
 		};
 
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateInputLayout(vertexDesc, ARRAYSIZE(vertexDesc), &fileData[0], fileData.size(), &m_inputLayout));
@@ -557,6 +609,12 @@ void Sample3DSceneRenderer::ReleaseDeviceDependentResources(void)
 	//floor
 	m_floorVertBuffer.Reset();
 	m_floorConstantBuffer.Reset();
+
+
+	//memory cleanup
+	delete m_vp1;
+	delete m_vp2;
+	delete m_vp3;
 }
 
 #pragma warning(disable:4996)

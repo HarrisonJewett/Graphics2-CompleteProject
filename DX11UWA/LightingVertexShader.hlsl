@@ -38,8 +38,10 @@ PixelShaderInput main(VertexShaderInput input)
 
 	output.normal = mul(input.normal, (float3x3)model);
 
-	output.normal = normalize(output.normal);
+	//output.normal = normalize(output.normal);
 
+	//position transformed by model matrix
+	//position padded with a 1 in the w
 	output.worldPos = (0.0f, 0.0f, 0.0f);
 	output.lightVal = (1.0f, 1.0f, 1.0f);
 

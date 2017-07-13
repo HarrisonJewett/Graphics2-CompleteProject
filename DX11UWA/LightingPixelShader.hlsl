@@ -28,12 +28,14 @@ float4 directional(PixelShaderInput input)
 		sin(input.lightVal.x), cos(input.lightVal.x),0.0f,
 		0.0f,0.0f,1.0f };
 	float3 lightDirection = { 3.0f, -1.0f, 0.0f };
-	lightDirection.x -= input.worldPos.x;
-	lightDirection.y -= input.worldPos.y;
-	lightDirection.z -= input.worldPos.z;
-	lightDirection = mul(lightDirection, lightMovementZ);
-	float lightRatio = saturate(dot(-normalize(lightDirection), input.normal));
+	//lightDirection.x -= input.worldPos.x;
+	//lightDirection.y -= input.worldPos.y;
+	//lightDirection.z -= input.worldPos.z;
+	//lightDirection = mul(lightDirection, lightMovementZ);
+	input.normal = normalize(input.normal);
+	float lightRatio = saturate(dot(normalize(-lightDirection), input.normal));
 	float3 color = { 0.5f, 0.1f, 0.1f };
+	//need surface color
 	float4 temp = float4(color, 1.0f) * lightRatio;
 	return temp;
 }
@@ -104,13 +106,13 @@ float4 spot(PixelShaderInput input)
 float4 main(PixelShaderInput input) : sv_target
 {
 	float4 dl = directional(input);
-	float4 pl = pLight(input);
-	float4 sl = spot(input);
+	//float4 pl = pLight(input);
+	//float4 sl = spot(input);
 	float4 modelColor = base.Sample(samp, input.uv);	
-	float4 sum = dl + pl; //+ sl
+	float4 sum = dl ; //pl + sl
 	return modelColor * sum;
-	float4 temp = spot(input);
+	//float4 temp = spot(input);
 
 	//float4 temp = directional(input) + pLight(input);
-	return temp;
+	//return temp;
 }

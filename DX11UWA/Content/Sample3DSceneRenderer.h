@@ -20,6 +20,7 @@ namespace DX11UWA
 		void ReleaseDeviceDependentResources(void);
 		void Update(DX::StepTimer const& timer);
 		void Render(void);
+		void postRender(ID3D11DeviceContext3 * context);
 		void StartTracking(void);
 		void TrackingUpdate(float positionX);
 		void StopTracking(void);
@@ -65,18 +66,18 @@ namespace DX11UWA
 		DirectX::XMFLOAT4X4 m_camera;
 
 		//Loading Floor object
-		std::vector<VertexPositionUVNormal>  m_floorVerticies;
-		std::vector<unsigned int>		     m_floorIndicies;
-		std::vector<VertexPositionUVNormal>  m_floorVertexPositionUVNormal;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_floorVertBuffer;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_floorIndexBuffer;
-		Microsoft::WRL::ComPtr<ID3D11VertexShader>			   m_floorVertexShader;
-		Microsoft::WRL::ComPtr<ID3D11PixelShader>			   m_floorPixelShader;
-		Microsoft::WRL::ComPtr<ID3D11Buffer>				   m_floorConstantBuffer;
-		Microsoft::WRL::ComPtr<ID3D11InputLayout>			   m_floorInputLayout;
-		Microsoft::WRL::ComPtr<ID3D11SamplerState>			   m_floorSampleState;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	   m_floorResourceView;
-		ModelViewProjectionConstantBuffer	m_floorConstantBufferData;
+		std::vector<VertexPositionUVNormal>					m_floorVerticies;
+		std::vector<unsigned int>							m_floorIndicies;
+		std::vector<VertexPositionUVNormal>					m_floorVertexPositionUVNormal;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>				m_floorVertBuffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>				m_floorIndexBuffer;
+		Microsoft::WRL::ComPtr<ID3D11VertexShader>			m_floorVertexShader;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader>			m_floorPixelShader;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>				m_floorConstantBuffer;
+		Microsoft::WRL::ComPtr<ID3D11InputLayout>			m_floorInputLayout;
+		Microsoft::WRL::ComPtr<ID3D11SamplerState>			m_floorSampleState;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_floorResourceView;
+		ModelViewProjectionConstantBuffer					m_floorConstantBufferData;
 
 		//Skybox
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_skyBoxResourceView;
@@ -87,6 +88,12 @@ namespace DX11UWA
 		Microsoft::WRL::ComPtr<ID3D11PixelShader>		 m_skyBoxPS;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>			 m_skyBoxConstantBuffer;
 		uint32 m_skyICount;
+
+		//Viewports
+		D3D11_VIEWPORT * m_vp1;
+		D3D11_VIEWPORT * m_vp2;
+		D3D11_VIEWPORT * m_vp3;
+		bool multipleViewports = false;
 
 	};
 }
