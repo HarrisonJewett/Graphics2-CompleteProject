@@ -1,6 +1,2 @@
-﻿  Sample3DSceneRenderer.cpp
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(326): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(575): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(583): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-  DX11UWA.vcxproj -> E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe
+﻿  DX11UWA.vcxproj -> E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe
   DX11UWA.vcxproj -> E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.pdb (Partial PDB)

@@ -72,7 +72,7 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources(void)
 	// this transform should not be applied.
 
 	// This sample makes use of a right-handed coordinate system using row-major matrices.
-	XMMATRIX perspectiveMatrix = XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, 0.01f, 200.0f);
+	XMMATRIX perspectiveMatrix = XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, nearPlane, farPlane);
 
 	XMFLOAT4X4 orientation = m_deviceResources->GetOrientationTransform3D();
 
@@ -123,6 +123,10 @@ void Sample3DSceneRenderer::Rotate(float radians)
 void Sample3DSceneRenderer::UpdateCamera(DX::StepTimer const& timer, float const moveSpd, float const rotSpd)
 {
 	const float delta_time = (float)timer.GetElapsedSeconds();
+	Size outputSize = m_deviceResources->GetOutputSize();
+
+	float aspectRatio = outputSize.Width / outputSize.Height;
+
 
 	if (m_kbuttons['W'])
 	{
@@ -168,13 +172,66 @@ void Sample3DSceneRenderer::UpdateCamera(DX::StepTimer const& timer, float const
 	}
 	if (m_kbuttons['9'])
 	{
-		//toggle viewport
 		multipleViewports = true;
 	}
 	if (m_kbuttons['0'])
 	{
-		//toggle viewport
 		multipleViewports = false;
+	}
+	if (m_kbuttons['U'])
+	{
+		planeChange = true;
+		fov = 70.0f * XM_PI / 180.0f;
+	}
+	if (m_kbuttons['J'])
+	{
+		planeChange = true;
+		fov *= 1.01f;
+	}
+	if (m_kbuttons['M'])
+	{
+		planeChange = true;
+		fov *= 0.99f;
+	}
+	if (m_kbuttons['O'])
+	{
+		farPlane++;
+		planeChange = true;
+	}
+	if (m_kbuttons['L'])
+	{
+		farPlane--;
+		planeChange = true;
+		if (farPlane < nearPlane)
+			farPlane = nearPlane + 1;
+	}
+	if (m_kbuttons['I'])
+	{
+		nearPlane++;
+		planeChange = true;
+		if (nearPlane > farPlane)
+			nearPlane = farPlane - 10;
+	}
+	if (m_kbuttons['K'])
+	{
+		nearPlane--;
+		planeChange = true;
+		if (nearPlane < 0)
+			nearPlane = 0.01f;
+	}
+
+
+	if (planeChange)
+	{
+		XMMATRIX perspectiveMatrix = XMMatrixPerspectiveFovLH(fov, aspectRatio, nearPlane, farPlane);
+
+		XMFLOAT4X4 orientation = m_deviceResources->GetOrientationTransform3D();
+
+		XMMATRIX orientationMatrix = XMLoadFloat4x4(&orientation);
+
+		XMStoreFloat4x4(&m_constantBufferData.projection, XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
+		XMStoreFloat4x4(&m_floorConstantBufferData.projection, XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
+		planeChange = false;
 	}
 
 	if (m_currMousePos) 
@@ -205,8 +262,6 @@ void Sample3DSceneRenderer::UpdateCamera(DX::StepTimer const& timer, float const
 		}
 		m_prevMousePos = m_currMousePos;
 	}
-
-
 }
 
 void Sample3DSceneRenderer::SetKeyboardButtons(const char* list)

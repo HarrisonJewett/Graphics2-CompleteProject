@@ -95,6 +95,12 @@ namespace DX11UWA
 		D3D11_VIEWPORT * m_vp3;
 		bool multipleViewports = false;
 
+		//planes
+		float nearPlane = 0.01f;
+		float farPlane = 200.0f;
+		float fov = 70.0f * 3.14f / 180.0f;
+		bool planeChange = false;
+
 	};
 }
 
