@@ -104,9 +104,6 @@
     <Image Include="Assets\StoreLogo.png">
       <Filter>Assets</Filter>
     </Image>
-    <Image Include="Assets\Ground.dds">
-      <Filter>Assets</Filter>
-    </Image>
     <Image Include="Assets\SkyboxOcean.dds">
       <Filter>Assets</Filter>
     </Image>
@@ -116,6 +113,9 @@
     <Image Include="Assets\iceCastleTexture.dds">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\GroundTexture.dds">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -123,6 +123,8 @@
   <ItemGroup>
     <None Include="DX11UWA_TemporaryKey.pfx" />
     <None Include="Assets\Ground.obj" />
+    <None Include="Assets\Howling_Wolf.obj" />
+    <None Include="Assets\icyCastle.obj" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Content\SamplePixelShader.hlsl">
@@ -149,13 +151,5 @@
     <FxCompile Include="SkyPixelShader.hlsl">
       <Filter>Content\Shaders</Filter>
     </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="Assets\Howling_Wolf.obj">
-      <Filter>Assets</Filter>
-    </Object>
-    <Object Include="Assets\icyCastle.obj">
-      <Filter>Assets</Filter>
-    </Object>
   </ItemGroup>
 </Project>

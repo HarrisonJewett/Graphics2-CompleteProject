@@ -65,7 +65,7 @@ namespace DX11UWA
 		// Matrix data member for the camera
 		DirectX::XMFLOAT4X4 m_camera;
 
-		//Loading Floor object
+		//Loading Floor object (now castle)
 		std::vector<VertexPositionUVNormal>					m_floorVerticies;
 		std::vector<unsigned int>							m_floorIndicies;
 		std::vector<VertexPositionUVNormal>					m_floorVertexPositionUVNormal;
@@ -113,10 +113,21 @@ namespace DX11UWA
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		   m_innerRenderTarget;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	   m_innerShaderResourceView;
 
-
 		ModelViewProjectionConstantBuffer	m_innerSceneConstantBufferData;
 		uint32								m_innerSceneIndexCount;
 
+		//New Floor
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_stoneResourceView;
+		Microsoft::WRL::ComPtr<ID3D11InputLayout>		 m_stoneInput;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>			 m_stoneVertexBuffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>			 m_stoneIndexBuffer;
+		Microsoft::WRL::ComPtr<ID3D11VertexShader>		 m_stoneVS;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader>		 m_stonePS;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>			 m_stoneConstantBuffer;
+		uint32 m_stoneICount;
+
+		//need constant buffer for each light
+		//constant buffers need to be 16 bytes
 	};
 }
 

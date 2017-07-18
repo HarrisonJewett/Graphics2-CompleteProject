@@ -2,12 +2,12 @@ e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\pch.pch
 e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\vc140.pdb
 e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\vc140.idb
 e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\pch.obj
-e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\sample3dscenerenderer.obj
-e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\deviceresources.obj
-e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\samplefpstextrenderer.obj
+e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\app.obj
 e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\ddstextureloader.obj
 e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\dx11uwamain.obj
-e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\app.obj
+e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\samplefpstextrenderer.obj
+e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\deviceresources.obj
+e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\sample3dscenerenderer.obj
 e:\projects\round 2\project\dx11uwa\x64\debug\dx11uwa\samplepixelshader.cso
 e:\projects\round 2\project\dx11uwa\x64\debug\dx11uwa\samplevertexshader.cso
 e:\projects\round 2\project\dx11uwa\x64\debug\dx11uwa\floorpixelshader.cso
@@ -17,7 +17,6 @@ e:\projects\round 2\project\dx11uwa\x64\debug\dx11uwa\lightingvertexshader.cso
 e:\projects\round 2\project\dx11uwa\x64\debug\dx11uwa\skypixelshader.cso
 e:\projects\round 2\project\dx11uwa\x64\debug\dx11uwa\skyvertexshader.cso
 e:\projects\round 2\project\dx11uwa\x64\debug\dx11uwa\dx11uwa.winmd
-e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\dx11uwa.vcxprojresolveassemblyreference.cache
 e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\resourcehandlingtask.state
 e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\priconfig.xml
 e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\priconfig.xml.intermediate
@@ -34,6 +33,7 @@ e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\multiplequalifiersperdimen
 e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\projectarchitectures.txt
 e:\projects\round 2\project\dx11uwa\x64\debug\dx11uwa\appxmanifest.xml
 e:\projects\round 2\project\dx11uwa\x64\debug\dx11uwa\dx11uwa.build.appxrecipe
+e:\projects\round 2\project\dx11uwa\dx11uwa\x64\debug\dx11uwa.vcxprojresolveassemblyreference.cache
 e:\projects\round 2\project\dx11uwa\x64\debug\dx11uwa\dx11uwa.ilk
 e:\projects\round 2\project\dx11uwa\x64\debug\dx11uwa\dx11uwa.exe
 e:\projects\round 2\project\dx11uwa\x64\debug\dx11uwa\dx11uwa.pdb

@@ -23,10 +23,12 @@ struct PixelShaderInput
 
 float4 directional(PixelShaderInput input)
 {
-	float3x3 lightMovementZ = {
-		cos(input.lightVal.x),-sin(input.lightVal.x),0.0f,
-		sin(input.lightVal.x), cos(input.lightVal.x),0.0f,
-		0.0f,0.0f,1.0f };
+	float3x3 lightMovementZ = 
+	{
+		cos(input.lightVal.x),  -sin(input.lightVal.x),  0.0f,
+		sin(input.lightVal.x),   cos(input.lightVal.x),  0.0f,
+		0.0f,					 0.0f,					 1.0f 
+	};
 	float3 lightDirection = { 3.0f, -1.0f, 0.0f };
 	lightDirection.x -= input.worldPos.x;
 	lightDirection.y -= input.worldPos.y;
@@ -41,9 +43,12 @@ float4 directional(PixelShaderInput input)
 
 float4 pLight(PixelShaderInput input) {
 	float3 lightPos;
-	float3x3 lightMovementY = { cos(input.lightVal.x),0.0f,sin(input.lightVal.x),
-		0.0f,1.0f,0.0f,
-		-sin(input.lightVal.x),0.0f, cos(input.lightVal.x) };
+	float3x3 lightMovementY = 
+	{
+		cos(input.lightVal.x),   0.0f,    sin(input.lightVal.x),
+		0.0f,					 1.0f,	  0.0f,
+		-sin(input.lightVal.x),  0.0f,    cos(input.lightVal.x)
+	};
 	float3 wPos = input.worldPos.xyz;
 
 	wPos = mul(wPos, lightMovementY);
@@ -63,10 +68,11 @@ float4 pLight(PixelShaderInput input) {
 float4 spot(PixelShaderInput input)
 {
 	float3 lightPos;
-	float3x3 lightMovementY = {
-		cos(input.lightVal.x),0.0f,sin(input.lightVal.x),
-		0.0f,1.0f,0.0f,
-		-sin(input.lightVal.x),0.0f, cos(input.lightVal.x)
+	float3x3 lightMovementY = 
+	{
+		cos(input.lightVal.x),		0.0f,		sin(input.lightVal.x),
+		0.0f,						1.0f,		0.0f,
+		-sin(input.lightVal.x),		0.0f,		cos(input.lightVal.x)
 	};
 	float3 wPos = input.worldPos.xyz;
 

@@ -1,8 +1,6 @@
-﻿  Sample3DSceneRenderer.cpp
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(381): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(574): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(575): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(779): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(787): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+﻿E:\Projects\Round 2\Project\DX11UWA\DX11UWA\LightingPixelShader.hlsl(105,8-49): warning X3206: implicit truncation of vector type
+E:\Projects\Round 2\Project\DX11UWA\DX11UWA\LightingPixelShader.hlsl(120,22-48): warning X3206: 'Sample': implicit truncation of vector type
+  
+  compilation object save succeeded; see E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingPixelShader.cso
   DX11UWA.vcxproj -> E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe
   DX11UWA.vcxproj -> E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.pdb (Partial PDB)
