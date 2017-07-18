@@ -101,6 +101,22 @@ namespace DX11UWA
 		float fov = 70.0f * 3.14f / 180.0f;
 		bool planeChange = false;
 
+		//Scene within a scene
+		Microsoft::WRL::ComPtr<ID3D11InputLayout>			   m_innerSceneInputLayout;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>				   m_innerSceneVertexBuffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>				   m_innerSceneIndexBuffer;
+		Microsoft::WRL::ComPtr<ID3D11VertexShader>			   m_innerSceneVertexShader;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader>			   m_innerScenePixelShader;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>				   m_innerSceneConstantBuffer;
+		Microsoft::WRL::ComPtr<ID3D11SamplerState>			   m_innerSceneSampleState;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D>				   m_innerTargetTexture;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		   m_innerRenderTarget;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	   m_innerShaderResourceView;
+
+
+		ModelViewProjectionConstantBuffer	m_innerSceneConstantBufferData;
+		uint32								m_innerSceneIndexCount;
+
 	};
 }
 
