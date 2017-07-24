@@ -28,7 +28,7 @@
   <ItemGroup>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe">
       <PackagePath>DX11UWA.exe</PackagePath>
-      <Modified>2017-07-18T22:32:31.884</Modified>
+      <Modified>2017-07-24T17:24:46.119</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.winmd">
       <PackagePath>DX11UWA.winmd</PackagePath>
@@ -114,7 +114,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingPixelShader.cso">
       <PackagePath>LightingPixelShader.cso</PackagePath>
-      <Modified>2017-07-18T22:37:42.038</Modified>
+      <Modified>2017-07-24T17:25:42.383</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingVertexShader.cso">
       <PackagePath>LightingVertexShader.cso</PackagePath>

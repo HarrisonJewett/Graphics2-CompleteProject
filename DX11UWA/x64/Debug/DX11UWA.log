@@ -1,5 +1,5 @@
 ﻿E:\Projects\Round 2\Project\DX11UWA\DX11UWA\LightingPixelShader.hlsl(105,8-49): warning X3206: implicit truncation of vector type
-E:\Projects\Round 2\Project\DX11UWA\DX11UWA\LightingPixelShader.hlsl(120,22-48): warning X3206: 'Sample': implicit truncation of vector type
+E:\Projects\Round 2\Project\DX11UWA\DX11UWA\LightingPixelShader.hlsl(120,22-52): warning X3206: 'Sample': implicit truncation of vector type
   
   compilation object save succeeded; see E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingPixelShader.cso
   DX11UWA.vcxproj -> E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe

@@ -29,7 +29,7 @@ float4 directional(PixelShaderInput input)
 		sin(input.lightVal.x),   cos(input.lightVal.x),  0.0f,
 		0.0f,					 0.0f,					 1.0f 
 	};
-	float3 lightDirection = { 3.0f, -1.0f, 0.0f };
+	float3 lightDirection = { 2.0f, -1.0f, 0.0f };
 	lightDirection.x -= input.worldPos.x;
 	lightDirection.y -= input.worldPos.y;
 	lightDirection.z -= input.worldPos.z;
