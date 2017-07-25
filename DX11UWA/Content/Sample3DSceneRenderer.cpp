@@ -162,14 +162,14 @@ void Sample3DSceneRenderer::UpdateCamera(DX::StepTimer const& timer, float const
 	}
 	if (m_kbuttons['X'])
 	{
-		XMMATRIX translation = XMMatrixTranslation( 0.0f, -moveSpd * delta_time, 0.0f);
+		XMMATRIX translation = XMMatrixTranslation(0.0f, -moveSpd * delta_time, 0.0f);
 		XMMATRIX temp_camera = XMLoadFloat4x4(&m_camera);
 		XMMATRIX result = XMMatrixMultiply(translation, temp_camera);
 		XMStoreFloat4x4(&m_camera, result);
 	}
 	if (m_kbuttons[VK_SPACE])
 	{
-		XMMATRIX translation = XMMatrixTranslation( 0.0f, moveSpd * delta_time, 0.0f);
+		XMMATRIX translation = XMMatrixTranslation(0.0f, moveSpd * delta_time, 0.0f);
 		XMMATRIX temp_camera = XMLoadFloat4x4(&m_camera);
 		XMMATRIX result = XMMatrixMultiply(translation, temp_camera);
 		XMStoreFloat4x4(&m_camera, result);
@@ -253,7 +253,7 @@ void Sample3DSceneRenderer::UpdateCamera(DX::StepTimer const& timer, float const
 		planeChange = false;
 	}
 
-	if (m_currMousePos) 
+	if (m_currMousePos)
 	{
 		if (m_currMousePos->Properties->IsRightButtonPressed && m_prevMousePos)
 		{
@@ -348,97 +348,16 @@ void Sample3DSceneRenderer::postRender(ID3D11DeviceContext3 * context)
 {
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
 
-	//Sky
-	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixScaling(100.0f, 100.0f, 100.0f));
-	context->UpdateSubresource1(m_skyBoxConstantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
-	UINT stride = sizeof(Sky);
-	UINT offset = 0;
-	context->IASetVertexBuffers(0, 1, m_skyBoxVertexBuffer.GetAddressOf(), &stride, &offset);
-	context->IASetIndexBuffer(m_skyBoxIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	context->IASetInputLayout(m_skyBoxInput.Get());
-	context->VSSetShader(m_skyBoxVS.Get(), nullptr, 0);
-	context->VSSetConstantBuffers1(0, 1, m_skyBoxConstantBuffer.GetAddressOf(), nullptr, nullptr);
-	context->PSSetShader(m_skyBoxPS.Get(), nullptr, 0);
-	context->PSSetShaderResources(0, 1, m_skyBoxResourceView.GetAddressOf());
-	context->DrawIndexed(m_skyICount, 0, 0);
-
-	//UV Cube
-	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
-	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixScaling(1.0f,1.0f,1.0f), XMMatrixTranslation(5.0f, 6.5f, 2.0f))));
-	context->UpdateSubresource1(m_constantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
-	stride = sizeof(VertexPositionUVNormal);
-	offset = 0;
-	context->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
-	context->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	context->IASetInputLayout(m_inputLayout.Get());
-	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
-	context->VSSetConstantBuffers1(0, 1, m_constantBuffer.GetAddressOf(), nullptr, nullptr);
-	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
-	context->PSSetShaderResources(0, 1, m_cubeResourceView.GetAddressOf());
-	context->DrawIndexed(m_indexCount, 0, 0);
-
-	//Floor / ice castle
-	XMStoreFloat4x4(&m_floorConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(5.0f, -2.0f, 2.0f))));
-
-	XMStoreFloat4x4(&m_floorConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
-
-	context->UpdateSubresource1(m_floorConstantBuffer.Get(), 0, NULL, &m_floorConstantBufferData, 0, 0, 0);
-	stride = sizeof(VertexPositionUVNormal);
-	offset = 0;
-	context->IASetVertexBuffers(0, 1, m_floorVertBuffer.GetAddressOf(), &stride, &offset);
-	context->IASetIndexBuffer(m_floorIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	context->IASetInputLayout(m_floorInputLayout.Get());
-	context->VSSetShader(m_floorVertexShader.Get(), nullptr, 0);
-	context->VSSetConstantBuffers1(0, 1, m_floorConstantBuffer.GetAddressOf(), nullptr, nullptr);
-	context->PSSetShader(m_floorPixelShader.Get(), nullptr, 0);
-	context->PSSetShaderResources(0, 1, m_floorResourceView.GetAddressOf());
-	context->PSSetSamplers(0, 1, m_floorSampleState.GetAddressOf());
-	context->DrawIndexed(m_floorIndicies.size(), 0, 0);
-
-	//Wolf
-	XMStoreFloat4x4(&m_wolfConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(1.0f, 5.0f, -2.0f))));
-	XMStoreFloat4x4(&m_wolfConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
-	context->UpdateSubresource1(m_wolfConstantBuffer.Get(), 0, NULL, &m_wolfConstantBufferData, 0, 0, 0);
-	stride = sizeof(VertexPositionUVNormal);
-	offset = 0;
-	context->IASetVertexBuffers(0, 1, m_wolfVertBuffer.GetAddressOf(), &stride, &offset);
-	context->IASetIndexBuffer(m_wolfIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	context->IASetInputLayout(m_wolfInputLayout.Get());
-	context->VSSetShader(m_wolfVertexShader.Get(), nullptr, 0);
-	context->VSSetConstantBuffers1(0, 1, m_wolfConstantBuffer.GetAddressOf(), nullptr, nullptr);
-	context->PSSetShader(m_wolfPixelShader.Get(), nullptr, 0);
-	context->PSSetShaderResources(0, 1, m_wolfResourceView.GetAddressOf());
-	context->PSSetSamplers(0, 1, m_wolfSampleState.GetAddressOf());
-	context->DrawIndexed(m_wolfIndicies.size(), 0, 0);
-
-	//Stone floor
-	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixScaling(1.0f, 0.2f, 1.0f));
-	context->UpdateSubresource1(m_stoneConstantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
-	stride = sizeof(VertexPositionUVNormal);
-	offset = 0;
-	context->IASetVertexBuffers(0, 1, m_stoneVertexBuffer.GetAddressOf(), &stride, &offset);
-	context->IASetIndexBuffer(m_stoneIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	context->IASetInputLayout(m_stoneInput.Get());
-	context->VSSetShader(m_stoneVS.Get(), nullptr, 0);
-	context->VSSetConstantBuffers1(0, 1, m_stoneConstantBuffer.GetAddressOf(), nullptr, nullptr);
-	context->PSSetShader(m_stonePS.Get(), nullptr, 0);
-	context->PSSetShaderResources(0, 1, m_stoneResourceView.GetAddressOf());
-	context->DrawIndexed(m_stoneICount, 0, 0);
-
+	ID3D11RenderTargetView *const target[1] = { m_deviceResources->GetBackBufferRenderTargetView() };
 
 	//Change this.
 	//Need to draw to an offscreen texture, then draw the box, then put the texture on it. I think
 	if (true)
 	{
-		ID3D11RenderTargetView *const target[1] = { m_deviceResources->GetBackBufferRenderTargetView() };
 
 		context->OMSetRenderTargets(1, m_innerRenderTarget.GetAddressOf(), m_deviceResources->GetDepthStencilView());
 		context->ClearRenderTargetView(m_innerRenderTarget.Get(), DirectX::Colors::SeaGreen);
+		context->ClearDepthStencilView(m_deviceResources->GetDepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 		XMStoreFloat4x4(&m_innerSceneConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
 		XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
 		XMStoreFloat4x4(&m_floorConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
@@ -526,44 +445,129 @@ void Sample3DSceneRenderer::postRender(ID3D11DeviceContext3 * context)
 		context->PSSetShader(m_stonePS.Get(), nullptr, 0);
 		context->PSSetShaderResources(0, 1, m_stoneResourceView.GetAddressOf());
 		context->DrawIndexed(m_stoneICount, 0, 0);
-
-		//Scene within a scene
-		context->OMSetRenderTargets(1, target, m_deviceResources->GetDepthStencilView());
-		XMStoreFloat4x4(&m_innerSceneConstantBufferData.model, XMMatrixTranspose(XMMatrixTranslation(-2.0f, 0.0f, 2.0f)));
-		XMStoreFloat4x4(&m_innerSceneConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
-		m_innerSceneConstantBufferData.projection = m_constantBufferData.projection;
-		context->UpdateSubresource1(m_innerSceneConstantBuffer.Get(), 0, NULL, &m_innerSceneConstantBufferData, 0, 0, 0);
-		stride = sizeof(VertexPositionUVNormal);
-		offset = 0;
-		context->IASetVertexBuffers(0, 1, m_innerSceneVertexBuffer.GetAddressOf(), &stride, &offset);
-		context->IASetIndexBuffer(m_innerSceneIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		context->IASetInputLayout(m_innerSceneInputLayout.Get());
-		context->VSSetShader(m_innerSceneVertexShader.Get(), nullptr, 0);
-		context->VSSetConstantBuffers1(0, 1, m_innerSceneConstantBuffer.GetAddressOf(), nullptr, nullptr);
-		context->PSSetShader(m_innerScenePixelShader.Get(), nullptr, 0);
-		context->PSSetShaderResources(0, 1, m_innerShaderResourceView.GetAddressOf());
-		context->PSSetSamplers(0, 1, m_innerSceneSampleState.GetAddressOf());
-		context->DrawIndexed(m_innerSceneIndexCount, 0, 0);
-
-		//delete[] target;
 	}
+
+
+	context->OMSetRenderTargets(1, target, m_deviceResources->GetDepthStencilView());
+	context->ClearDepthStencilView(m_deviceResources->GetDepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+	//Sky
+	//sky matrix is the identity, position is camera world matrix
+	//ADD THIS^^^^
+	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixScaling(100.0f, 100.0f, 100.0f));
+	context->UpdateSubresource1(m_skyBoxConstantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
+	UINT stride = sizeof(Sky);
+	UINT offset = 0;
+	context->IASetVertexBuffers(0, 1, m_skyBoxVertexBuffer.GetAddressOf(), &stride, &offset);
+	context->IASetIndexBuffer(m_skyBoxIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->IASetInputLayout(m_skyBoxInput.Get());
+	context->VSSetShader(m_skyBoxVS.Get(), nullptr, 0);
+	context->VSSetConstantBuffers1(0, 1, m_skyBoxConstantBuffer.GetAddressOf(), nullptr, nullptr);
+	context->PSSetShader(m_skyBoxPS.Get(), nullptr, 0);
+	context->PSSetShaderResources(0, 1, m_skyBoxResourceView.GetAddressOf());
+	context->DrawIndexed(m_skyICount, 0, 0);
+
+	//UV Cube
+	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
+	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixScaling(1.0f, 1.0f, 1.0f), XMMatrixTranslation(5.0f, 6.5f, 2.0f))));
+	context->UpdateSubresource1(m_constantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
+	stride = sizeof(VertexPositionUVNormal);
+	offset = 0;
+	context->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
+	context->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->IASetInputLayout(m_inputLayout.Get());
+	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
+	context->VSSetConstantBuffers1(0, 1, m_constantBuffer.GetAddressOf(), nullptr, nullptr);
+	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+	context->PSSetShaderResources(0, 1, m_cubeResourceView.GetAddressOf());
+	context->DrawIndexed(m_indexCount, 0, 0);
+
+	//Floor / ice castle
+	XMStoreFloat4x4(&m_floorConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(5.0f, -2.0f, 2.0f))));
+
+	XMStoreFloat4x4(&m_floorConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
+
+	context->UpdateSubresource1(m_floorConstantBuffer.Get(), 0, NULL, &m_floorConstantBufferData, 0, 0, 0);
+	stride = sizeof(VertexPositionUVNormal);
+	offset = 0;
+	context->IASetVertexBuffers(0, 1, m_floorVertBuffer.GetAddressOf(), &stride, &offset);
+	context->IASetIndexBuffer(m_floorIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->IASetInputLayout(m_floorInputLayout.Get());
+	context->VSSetShader(m_floorVertexShader.Get(), nullptr, 0);
+	context->VSSetConstantBuffers1(0, 1, m_floorConstantBuffer.GetAddressOf(), nullptr, nullptr);
+	context->PSSetShader(m_floorPixelShader.Get(), nullptr, 0);
+	context->PSSetShaderResources(0, 1, m_floorResourceView.GetAddressOf());
+	context->PSSetSamplers(0, 1, m_floorSampleState.GetAddressOf());
+	context->DrawIndexed(m_floorIndicies.size(), 0, 0);
+
+	//Wolf
+	XMStoreFloat4x4(&m_wolfConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(1.0f, 5.0f, -2.0f))));
+	XMStoreFloat4x4(&m_wolfConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
+	context->UpdateSubresource1(m_wolfConstantBuffer.Get(), 0, NULL, &m_wolfConstantBufferData, 0, 0, 0);
+	stride = sizeof(VertexPositionUVNormal);
+	offset = 0;
+	context->IASetVertexBuffers(0, 1, m_wolfVertBuffer.GetAddressOf(), &stride, &offset);
+	context->IASetIndexBuffer(m_wolfIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->IASetInputLayout(m_wolfInputLayout.Get());
+	context->VSSetShader(m_wolfVertexShader.Get(), nullptr, 0);
+	context->VSSetConstantBuffers1(0, 1, m_wolfConstantBuffer.GetAddressOf(), nullptr, nullptr);
+	context->PSSetShader(m_wolfPixelShader.Get(), nullptr, 0);
+	context->PSSetShaderResources(0, 1, m_wolfResourceView.GetAddressOf());
+	context->PSSetSamplers(0, 1, m_wolfSampleState.GetAddressOf());
+	context->DrawIndexed(m_wolfIndicies.size(), 0, 0);
+
+	//Stone floor
+	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixScaling(1.0f, 0.2f, 1.0f));
+	context->UpdateSubresource1(m_stoneConstantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
+	stride = sizeof(VertexPositionUVNormal);
+	offset = 0;
+	context->IASetVertexBuffers(0, 1, m_stoneVertexBuffer.GetAddressOf(), &stride, &offset);
+	context->IASetIndexBuffer(m_stoneIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->IASetInputLayout(m_stoneInput.Get());
+	context->VSSetShader(m_stoneVS.Get(), nullptr, 0);
+	context->VSSetConstantBuffers1(0, 1, m_stoneConstantBuffer.GetAddressOf(), nullptr, nullptr);
+	context->PSSetShader(m_stonePS.Get(), nullptr, 0);
+	context->PSSetShaderResources(0, 1, m_stoneResourceView.GetAddressOf());
+	context->DrawIndexed(m_stoneICount, 0, 0);
+
+	//Scene within a scene
+	XMStoreFloat4x4(&m_innerSceneConstantBufferData.model, XMMatrixTranspose(XMMatrixTranslation(-2.0f, 0.0f, 2.0f)));
+	XMStoreFloat4x4(&m_innerSceneConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
+	m_innerSceneConstantBufferData.projection = m_constantBufferData.projection;
+	context->UpdateSubresource1(m_innerSceneConstantBuffer.Get(), 0, NULL, &m_innerSceneConstantBufferData, 0, 0, 0);
+	stride = sizeof(VertexPositionUVNormal);
+	offset = 0;
+	context->IASetVertexBuffers(0, 1, m_innerSceneVertexBuffer.GetAddressOf(), &stride, &offset);
+	context->IASetIndexBuffer(m_innerSceneIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->IASetInputLayout(m_innerSceneInputLayout.Get());
+	context->VSSetShader(m_innerSceneVertexShader.Get(), nullptr, 0);
+	context->VSSetConstantBuffers1(0, 1, m_innerSceneConstantBuffer.GetAddressOf(), nullptr, nullptr);
+	context->PSSetShader(m_innerScenePixelShader.Get(), nullptr, 0);
+	context->PSSetShaderResources(0, 1, m_innerShaderResourceView.GetAddressOf());
+	context->PSSetSamplers(0, 1, m_innerSceneSampleState.GetAddressOf());
+	context->DrawIndexed(m_innerSceneIndexCount, 0, 0);
+
+	//delete[] target;
+
 }
 
 void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 {
 	// Load shaders asynchronously.
 	//Cube
-	//Normal
-	//auto loadVSTask = DX::ReadDataAsync(L"SampleVertexShader.cso");
-	//auto loadPSTask = DX::ReadDataAsync(L"SamplePixelShader.cso");
-	//Attempting lighting on cube. Currently give weird green lines
 	auto loadVSTask = DX::ReadDataAsync(L"LightingVertexShader.cso");
 	auto loadPSTask = DX::ReadDataAsync(L"LightingPixelShader.cso");
 
 	//Floor with lighting
 	auto loadFloorVSTask = DX::ReadDataAsync(L"LightingVertexShader.cso");
 	auto loadFloorPSTask = DX::ReadDataAsync(L"LightingPixelShader.cso");
+
 	//Wolf with lighting
 	auto loadWolfVSTask = DX::ReadDataAsync(L"LightingVertexShader.cso");
 	auto loadWolfPSTask = DX::ReadDataAsync(L"LightingPixelShader.cso");
@@ -734,38 +738,38 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 	//-----------------END SKYBOX-----------------------//
 
 	//-----------------Scene within a Scene-------------//
-	
+
 	auto loadInnerVSTask = DX::ReadDataAsync(L"InnerVertexShader.cso");
 
-	auto createInnerSceneVSTask = loadVSTask.then([this](const std::vector<byte>& fileData)
+	auto createInnerSceneVSTask = loadInnerVSTask.then([this](const std::vector<byte>& fileData)
 	{
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateVertexShader(&fileData[0], fileData.size(), nullptr, &m_innerSceneVertexShader));
-	
+
 		static const D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "UV", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
-	
+
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateInputLayout(vertexDesc, ARRAYSIZE(vertexDesc), &fileData[0], fileData.size(), &m_innerSceneInputLayout));
 	});
-	
+
 	auto loadInnerPSTask = DX::ReadDataAsync(L"InnerPixelShader.cso");
 
-	auto createInnerScenePSTask = loadPSTask.then([this](const std::vector<byte>& fileData)
+	auto createInnerScenePSTask = loadInnerPSTask.then([this](const std::vector<byte>& fileData)
 	{
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreatePixelShader(&fileData[0], fileData.size(), nullptr, &m_innerScenePixelShader));
-	
+
 		CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&constantBufferDesc, nullptr, &m_innerSceneConstantBuffer));
-	
+
 	});
-	
+
 	auto createInnerSceneTask = (createInnerScenePSTask && createInnerSceneVSTask).then([this]()
 	{
 		Size outSize = m_deviceResources->GetOutputSize();
-	
+
 		D3D11_TEXTURE2D_DESC TextureDesc;
 		ZeroMemory(&TextureDesc, sizeof(TextureDesc));
 		TextureDesc.MipLevels = 1;
@@ -777,24 +781,13 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		TextureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 		TextureDesc.CPUAccessFlags = 0;
 		TextureDesc.MiscFlags = 0;
-	
+
 		m_deviceResources->GetD3DDevice()->CreateTexture2D(&TextureDesc, NULL, &m_innerTargetTexture);
-	
-		D3D11_RENDER_TARGET_VIEW_DESC renderView;
-		renderView.Format = TextureDesc.Format;
-		renderView.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-		renderView.Texture2D.MipSlice = 0;
-	
-		m_deviceResources->GetD3DDevice()->CreateRenderTargetView(m_innerTargetTexture.Get(), &renderView, &m_innerRenderTarget);
-	
-		D3D11_SHADER_RESOURCE_VIEW_DESC shaderResource;
-		shaderResource.Format = TextureDesc.Format;
-		shaderResource.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
-		shaderResource.Texture2D.MostDetailedMip = 0;
-		shaderResource.Texture2D.MipLevels = 1;
-	
-		m_deviceResources->GetD3DDevice()->CreateShaderResourceView(m_innerTargetTexture.Get(), &shaderResource, &m_innerShaderResourceView);
-	
+
+		m_deviceResources->GetD3DDevice()->CreateRenderTargetView(m_innerTargetTexture.Get(), NULL, &m_innerRenderTarget);
+
+		m_deviceResources->GetD3DDevice()->CreateShaderResourceView(m_innerTargetTexture.Get(), NULL, &m_innerShaderResourceView);
+
 		static const VertexPositionUVNormal CubeUV[] =
 		{
 			//Front Face
@@ -802,83 +795,83 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 			/*1*/{ XMFLOAT3(-4.0f, 1.0f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*2*/{ XMFLOAT3(-5.0f, 0.0f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*3*/{ XMFLOAT3(-4.0f, 0.0f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-	
+
 			//Right Face
 			/*4*/{ XMFLOAT3(-4.0f, 1.0f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*5*/{ XMFLOAT3(-4.0f, 1.0f, 0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*6*/{ XMFLOAT3(-4.0f, 0.0f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*7*/{ XMFLOAT3(-4.0f, 0.0f, 0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-	
+
 			//Back Face
 			/*8*/{ XMFLOAT3(-4.0f, 1.0f, 0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*9*/{ XMFLOAT3(-5.0f, 1.0f, 0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*10*/{ XMFLOAT3(-4.0f, 0.0f, 0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*11*/{ XMFLOAT3(-5.0f, 0.0f, 0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-	
+
 			//Left Face
 			/*12*/{ XMFLOAT3(-5.0f, 1.0f, 0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*13*/{ XMFLOAT3(-5.0f, 1.0f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*14*/{ XMFLOAT3(-5.0f, 0.0f, 0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*15*/{ XMFLOAT3(-5.0f, 0.0f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-	
+
 			//Top Face
 			/*16*/{ XMFLOAT3(-5.0f, 1.0f, 0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*17*/{ XMFLOAT3(-4.0f, 1.0f, 0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*18*/{ XMFLOAT3(-5.0f, 1.0f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*19*/{ XMFLOAT3(-4.0f, 1.0f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-	
+
 			//Bottom Face
 			/*20*/{ XMFLOAT3(-5.0f, 0.0f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*21*/{ XMFLOAT3(-4.0f, 0.0f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*22*/{ XMFLOAT3(-5.0f, 0.0f, 0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*23*/{ XMFLOAT3(-4.0f, 0.0f, 0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 		};
-	
+
 		static const unsigned short CubeUVIndices[] =
 		{
 			0,1,3,
 			3,2,0,
-	
+
 			4,5,7,
 			7,6,4,
-	
+
 			8,9,11,
 			11,10,8,
-	
+
 			12,13,15,
 			15,14,12,
-	
+
 			16,17,19,
 			19,18,16,
-	
+
 			20,21,23,
 			23,22,20,
 		};
-	
+
 		m_innerSceneIndexCount = ARRAYSIZE(CubeUVIndices);
-	
+
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
-	
+
 		vertexBufferData.pSysMem = CubeUV;
 		vertexBufferData.SysMemPitch = 0;
 		vertexBufferData.SysMemSlicePitch = 0;
-	
+
 		//CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(cubeVertices), D3D11_BIND_VERTEX_BUFFER);
 		CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(CubeUV), D3D11_BIND_VERTEX_BUFFER);
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &m_innerSceneVertexBuffer));
-	
+
 		D3D11_SUBRESOURCE_DATA indexBufferData = { 0 };
-	
+
 		//indexBufferData.pSysMem = cubeIndices;
 		indexBufferData.pSysMem = CubeUVIndices;
 		indexBufferData.SysMemPitch = 0;
 		indexBufferData.SysMemSlicePitch = 0;
-	
+
 		//CD3D11_BUFFER_DESC indexBufferDesc(sizeof(cubeIndices), D3D11_BIND_INDEX_BUFFER);
 		CD3D11_BUFFER_DESC indexBufferDesc(sizeof(CubeUVIndices), D3D11_BIND_INDEX_BUFFER);
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexBufferData, &m_innerSceneIndexBuffer));
-	
-	
+
+
 	});
 
 	//------------------END SCENE WITHIN A SCENE------------------//
@@ -886,11 +879,11 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 	//---------------Stone Floor---------------------------//
 
 	auto loadStoneVSTask = DX::ReadDataAsync(L"LightingVertexShader.cso");
-	
+
 	auto createStoneVSTask = loadStoneVSTask.then([this](const std::vector<byte>& fileData)
 	{
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateVertexShader(&fileData[0], fileData.size(), nullptr, &m_stoneVS));
-	
+
 		static const D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -899,107 +892,107 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		};
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateInputLayout(vertexDesc, ARRAYSIZE(vertexDesc), &fileData[0], fileData.size(), &m_stoneInput));
 	});
-	
+
 	auto loadStonePSTask = DX::ReadDataAsync(L"LightingPixelShader.cso");
-	
+
 	auto createStonePSTask = loadStonePSTask.then([this](const std::vector<byte>& fileData)
 	{
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreatePixelShader(&fileData[0], fileData.size(), nullptr, &m_stonePS));
-	
+
 		CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
-	
+
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&constantBufferDesc, nullptr, &m_stoneConstantBuffer));
 	});
-	
+
 	auto createStoneFloor = (createStoneVSTask && createStonePSTask).then([this]()
 	{
 		static const VertexPositionUVNormal stoneFloor[] =
 		{
 			//Front Face
 			/*0*/{ XMFLOAT3(-10.0f,  -7.0f,   -10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*1*/{ XMFLOAT3( 10.0f,  -7.0f,   -10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*1*/{ XMFLOAT3(10.0f,  -7.0f,   -10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*2*/{ XMFLOAT3(-10.0f,  -11.0f,  -10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*3*/{ XMFLOAT3( 10.0f,  -11.0f,  -10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-	
+			/*3*/{ XMFLOAT3(10.0f,  -11.0f,  -10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+
 			//Right Face
 			/*4*/{ XMFLOAT3(10.0f, -7.0f,   -10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*5*/{ XMFLOAT3(10.0f, -7.0f,    10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*6*/{ XMFLOAT3(10.0f, -11.0f,  -10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*7*/{ XMFLOAT3(10.0f, -11.0f,   10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-	
+
 			//Back Face
-			/*8*/{ XMFLOAT3(  10.0f,   -7.0f,   10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*9*/{ XMFLOAT3( -10.0f,   -7.0f,   10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*10*/{ XMFLOAT3( 10.0f,   -11.0f,  10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*8*/{ XMFLOAT3(10.0f,   -7.0f,   10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*9*/{ XMFLOAT3(-10.0f,   -7.0f,   10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*10*/{ XMFLOAT3(10.0f,   -11.0f,  10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*11*/{ XMFLOAT3(-10.0f,   -11.0f,  10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-	
+
 			//Left Face
 			/*12*/{ XMFLOAT3(-10.0f, -7.0f,   10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*13*/{ XMFLOAT3(-10.0f, -7.0f,  -10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*14*/{ XMFLOAT3(-10.0f, -11.0f,  10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*15*/{ XMFLOAT3(-10.0f, -11.0f, -10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-	
+
 			//Top Face
 			/*16*/{ XMFLOAT3(-10.0f,  -7.0f,   10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*17*/{ XMFLOAT3( 10.0f,  -7.0f,   10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*17*/{ XMFLOAT3(10.0f,  -7.0f,   10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*18*/{ XMFLOAT3(-10.0f,  -7.0f,  -10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*19*/{ XMFLOAT3( 10.0f,  -7.0f,  -10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-	
+			/*19*/{ XMFLOAT3(10.0f,  -7.0f,  -10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+
 			//Bottom Face
 			/*20*/{ XMFLOAT3(-10.0f,  -11.0f,  -10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
-			/*21*/{ XMFLOAT3( 10.0f,  -11.0f,  -10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
+			/*21*/{ XMFLOAT3(10.0f,  -11.0f,  -10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
 			/*22*/{ XMFLOAT3(-10.0f,  -11.0f,   10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
-			/*23*/{ XMFLOAT3( 10.0f,  -11.0f,   10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
+			/*23*/{ XMFLOAT3(10.0f,  -11.0f,   10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
 
 		};
-	
+
 		static const unsigned short groundIndices[] =
 		{
 			0,1,3,
 			3,2,0,
-	
+
 			4,5,7,
 			7,6,4,
-	
+
 			8,9,11,
 			11,10,8,
-	
+
 			12,13,15,
 			15,14,12,
-	
+
 			16,17,19,
 			19,18,16,
-	
+
 			20,21,23,
 			23,22,20,
 		};
-	
+
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
 		vertexBufferData.pSysMem = stoneFloor;
 		vertexBufferData.SysMemPitch = 0;
 		vertexBufferData.SysMemSlicePitch = 0;
 		CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(stoneFloor), D3D11_BIND_VERTEX_BUFFER);
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &m_stoneVertexBuffer));
-	
-	
+
+
 		D3D11_SAMPLER_DESC sampleDesc;
 		ZeroMemory(&sampleDesc, sizeof(sampleDesc));
 		sampleDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		sampleDesc.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
 		sampleDesc.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
 		sampleDesc.AddressW = D3D11_TEXTURE_ADDRESS_MIRROR;
-	
+
 		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_deviceResources->GetD3DDevice(), L"Assets/GroundTexture.dds", NULL, m_stoneResourceView.GetAddressOf()));
-	
+
 		m_stoneICount = ARRAYSIZE(groundIndices);
-	
+
 		D3D11_SUBRESOURCE_DATA indexBufferData = { 0 };
 		indexBufferData.pSysMem = groundIndices;
 		indexBufferData.SysMemPitch = 0;
 		indexBufferData.SysMemSlicePitch = 0;
 		CD3D11_BUFFER_DESC indexBufferDesc(sizeof(groundIndices), D3D11_BIND_INDEX_BUFFER);
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexBufferData, m_stoneIndexBuffer.GetAddressOf()));
-	
+
 	});
 
 	//---------------End Stone Floor-----------------------//
