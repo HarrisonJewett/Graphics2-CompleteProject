@@ -41,12 +41,13 @@ namespace DX11UWA
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
 
 		// Direct3D resources for cube geometry.
-		Microsoft::WRL::ComPtr<ID3D11InputLayout>	m_inputLayout;
-		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_vertexBuffer;
-		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_indexBuffer;
-		Microsoft::WRL::ComPtr<ID3D11VertexShader>	m_vertexShader;
-		Microsoft::WRL::ComPtr<ID3D11PixelShader>	m_pixelShader;
-		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_constantBuffer;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_cubeResourceView;
+		Microsoft::WRL::ComPtr<ID3D11InputLayout>		 m_inputLayout;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>			 m_vertexBuffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>			 m_indexBuffer;
+		Microsoft::WRL::ComPtr<ID3D11VertexShader>		 m_vertexShader;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader>		 m_pixelShader;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>			 m_constantBuffer;
 
 		// System resources for cube geometry.
 		ModelViewProjectionConstantBuffer	m_constantBufferData;
@@ -79,6 +80,20 @@ namespace DX11UWA
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_floorResourceView;
 		ModelViewProjectionConstantBuffer					m_floorConstantBufferData;
 
+		//Wolves
+		std::vector<VertexPositionUVNormal>					m_wolfVerticies;
+		std::vector<unsigned int>							m_wolfIndicies;
+		std::vector<VertexPositionUVNormal>					m_wolfVertexPositionUVNormal;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>				m_wolfVertBuffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>				m_wolfIndexBuffer;
+		Microsoft::WRL::ComPtr<ID3D11VertexShader>			m_wolfVertexShader;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader>			m_wolfPixelShader;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>				m_wolfConstantBuffer;
+		Microsoft::WRL::ComPtr<ID3D11InputLayout>			m_wolfInputLayout;
+		Microsoft::WRL::ComPtr<ID3D11SamplerState>			m_wolfSampleState;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_wolfResourceView;
+		ModelViewProjectionConstantBuffer					m_wolfConstantBufferData;
+
 		//Skybox
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_skyBoxResourceView;
 		Microsoft::WRL::ComPtr<ID3D11InputLayout>		 m_skyBoxInput;
@@ -100,6 +115,7 @@ namespace DX11UWA
 		float farPlane = 200.0f;
 		float fov = 70.0f * 3.14f / 180.0f;
 		bool planeChange = false;
+		float moveSpeed = 1.0;
 
 		//Scene within a scene
 		Microsoft::WRL::ComPtr<ID3D11InputLayout>			   m_innerSceneInputLayout;

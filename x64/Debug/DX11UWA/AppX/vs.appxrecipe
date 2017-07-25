@@ -22,17 +22,17 @@
     <AppXManifest Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-07-18T22:03:12.255</Modified>
+      <Modified>2017-07-25T19:25:05.130</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe">
       <PackagePath>DX11UWA.exe</PackagePath>
-      <Modified>2017-07-24T17:24:46.119</Modified>
+      <Modified>2017-07-25T19:25:04.770</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.winmd">
       <PackagePath>DX11UWA.winmd</PackagePath>
-      <Modified>2017-07-18T20:27:39.542</Modified>
+      <Modified>2017-07-25T19:06:19.042</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\GroundTexture.dds">
       <PackagePath>Assets\GroundTexture.dds</PackagePath>
@@ -41,6 +41,10 @@
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\iceCastleTexture.dds">
       <PackagePath>Assets\iceCastleTexture.dds</PackagePath>
       <Modified>2017-06-22T22:37:33.862</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\lava.dds">
+      <PackagePath>Assets\lava.dds</PackagePath>
+      <Modified>2017-07-25T19:24:28.236</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\SkyboxOcean.dds">
       <PackagePath>Assets\SkyboxOcean.dds</PackagePath>
@@ -98,39 +102,39 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SamplePixelShader.cso">
       <PackagePath>SamplePixelShader.cso</PackagePath>
-      <Modified>2017-07-18T21:32:01.830</Modified>
+      <Modified>2017-07-25T19:06:10.148</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SampleVertexShader.cso">
       <PackagePath>SampleVertexShader.cso</PackagePath>
-      <Modified>2017-07-18T20:27:33.465</Modified>
+      <Modified>2017-07-25T19:06:10.297</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\FloorPixelShader.cso">
       <PackagePath>FloorPixelShader.cso</PackagePath>
-      <Modified>2017-07-18T20:27:33.562</Modified>
+      <Modified>2017-07-25T19:06:10.423</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\FloorVertexShader.cso">
       <PackagePath>FloorVertexShader.cso</PackagePath>
-      <Modified>2017-07-18T20:27:33.655</Modified>
+      <Modified>2017-07-25T19:06:10.561</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingPixelShader.cso">
       <PackagePath>LightingPixelShader.cso</PackagePath>
-      <Modified>2017-07-24T17:25:42.383</Modified>
+      <Modified>2017-07-25T19:06:10.667</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingVertexShader.cso">
       <PackagePath>LightingVertexShader.cso</PackagePath>
-      <Modified>2017-07-18T20:27:33.831</Modified>
+      <Modified>2017-07-25T19:06:10.804</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyPixelShader.cso">
       <PackagePath>SkyPixelShader.cso</PackagePath>
-      <Modified>2017-07-18T20:27:33.921</Modified>
+      <Modified>2017-07-25T19:06:10.985</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyVertexShader.cso">
       <PackagePath>SkyVertexShader.cso</PackagePath>
-      <Modified>2017-07-18T20:27:34.002</Modified>
+      <Modified>2017-07-25T19:06:11.217</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2017-07-18T22:03:12.014</Modified>
+      <Modified>2017-07-25T19:25:05.065</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

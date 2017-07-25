@@ -190,6 +190,7 @@
   <ItemGroup>
     <Image Include="Assets\GroundTexture.dds" />
     <Image Include="Assets\iceCastleTexture.dds" />
+    <Image Include="Assets\lava.dds" />
     <Image Include="Assets\LockScreenLogo.scale-200.png" />
     <Image Include="Assets\SkyboxOcean.dds" />
     <Image Include="Assets\SplashScreen.scale-200.png" />

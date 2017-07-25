@@ -80,6 +80,8 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources(void)
 
 	XMStoreFloat4x4(&m_constantBufferData.projection, XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
 	XMStoreFloat4x4(&m_floorConstantBufferData.projection, XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
+	XMStoreFloat4x4(&m_wolfConstantBufferData.projection, XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
+
 
 
 	// Eye is at (0,0.7,1.5), looking at point (0,-0.1,0) with the up-vector along the y-axis.
@@ -90,6 +92,8 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources(void)
 	XMStoreFloat4x4(&m_camera, XMMatrixInverse(nullptr, XMMatrixLookAtLH(eye, at, up)));
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
 	XMStoreFloat4x4(&m_floorConstantBufferData.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
+	XMStoreFloat4x4(&m_wolfConstantBufferData.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
+
 }
 
 // Called once per frame, rotates the cube and calculates the model and view matrices.
@@ -107,7 +111,7 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 
 
 	// Update or move camera here
-	UpdateCamera(timer, 2.0f, 0.75f);
+	UpdateCamera(timer, moveSpeed, 0.75f);
 
 }
 
@@ -219,6 +223,19 @@ void Sample3DSceneRenderer::UpdateCamera(DX::StepTimer const& timer, float const
 		if (nearPlane < 0)
 			nearPlane = 0.01f;
 	}
+	if (m_kbuttons['E'])
+	{
+		moveSpeed += 0.1f;
+	}
+	if (m_kbuttons['Q'])
+	{
+		moveSpeed -= 0.1f;
+		if (moveSpeed < 1.0f)
+		{
+			moveSpeed = 1.0f;
+		}
+	}
+
 
 
 	if (planeChange)
@@ -231,6 +248,8 @@ void Sample3DSceneRenderer::UpdateCamera(DX::StepTimer const& timer, float const
 
 		XMStoreFloat4x4(&m_constantBufferData.projection, XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
 		XMStoreFloat4x4(&m_floorConstantBufferData.projection, XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
+		XMStoreFloat4x4(&m_wolfConstantBufferData.projection, XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
+
 		planeChange = false;
 	}
 
@@ -346,9 +365,7 @@ void Sample3DSceneRenderer::postRender(ID3D11DeviceContext3 * context)
 
 	//UV Cube
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
-	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-
-
+	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixScaling(1.0f,1.0f,1.0f), XMMatrixTranslation(5.0f, 6.5f, 2.0f))));
 	context->UpdateSubresource1(m_constantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
 	stride = sizeof(VertexPositionUVNormal);
 	offset = 0;
@@ -359,10 +376,11 @@ void Sample3DSceneRenderer::postRender(ID3D11DeviceContext3 * context)
 	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
 	context->VSSetConstantBuffers1(0, 1, m_constantBuffer.GetAddressOf(), nullptr, nullptr);
 	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
-	//context->DrawIndexed(m_indexCount, 0, 0);
+	context->PSSetShaderResources(0, 1, m_cubeResourceView.GetAddressOf());
+	context->DrawIndexed(m_indexCount, 0, 0);
 
 	//Floor / ice castle
-	XMStoreFloat4x4(&m_floorConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(0.0f, -2.0f, 2.0f))));
+	XMStoreFloat4x4(&m_floorConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(5.0f, -2.0f, 2.0f))));
 
 	XMStoreFloat4x4(&m_floorConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
 
@@ -379,6 +397,23 @@ void Sample3DSceneRenderer::postRender(ID3D11DeviceContext3 * context)
 	context->PSSetShaderResources(0, 1, m_floorResourceView.GetAddressOf());
 	context->PSSetSamplers(0, 1, m_floorSampleState.GetAddressOf());
 	context->DrawIndexed(m_floorIndicies.size(), 0, 0);
+
+	//Wolf
+	XMStoreFloat4x4(&m_wolfConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(1.0f, 5.0f, -2.0f))));
+	XMStoreFloat4x4(&m_wolfConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
+	context->UpdateSubresource1(m_wolfConstantBuffer.Get(), 0, NULL, &m_wolfConstantBufferData, 0, 0, 0);
+	stride = sizeof(VertexPositionUVNormal);
+	offset = 0;
+	context->IASetVertexBuffers(0, 1, m_wolfVertBuffer.GetAddressOf(), &stride, &offset);
+	context->IASetIndexBuffer(m_wolfIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->IASetInputLayout(m_wolfInputLayout.Get());
+	context->VSSetShader(m_wolfVertexShader.Get(), nullptr, 0);
+	context->VSSetConstantBuffers1(0, 1, m_wolfConstantBuffer.GetAddressOf(), nullptr, nullptr);
+	context->PSSetShader(m_wolfPixelShader.Get(), nullptr, 0);
+	context->PSSetShaderResources(0, 1, m_wolfResourceView.GetAddressOf());
+	context->PSSetSamplers(0, 1, m_wolfSampleState.GetAddressOf());
+	context->DrawIndexed(m_wolfIndicies.size(), 0, 0);
 
 	//Stone floor
 	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixScaling(1.0f, 0.2f, 1.0f));
@@ -485,18 +520,19 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 	// Load shaders asynchronously.
 	//Cube
 	//Normal
-	auto loadVSTask = DX::ReadDataAsync(L"SampleVertexShader.cso");
-	auto loadPSTask = DX::ReadDataAsync(L"SamplePixelShader.cso");
+	//auto loadVSTask = DX::ReadDataAsync(L"SampleVertexShader.cso");
+	//auto loadPSTask = DX::ReadDataAsync(L"SamplePixelShader.cso");
 	//Attempting lighting on cube. Currently give weird green lines
-	//auto loadVSTask = DX::ReadDataAsync(L"LightingVertexShader.cso");
-	//auto loadPSTask = DX::ReadDataAsync(L"LightingPixelShader.cso");
+	auto loadVSTask = DX::ReadDataAsync(L"LightingVertexShader.cso");
+	auto loadPSTask = DX::ReadDataAsync(L"LightingPixelShader.cso");
 
-	//Floor
-	//auto loadFloorVSTask = DX::ReadDataAsync(L"FloorVertexShader.cso");
-	//auto loadFloorPSTask = DX::ReadDataAsync(L"FloorPixelShader.cso");
 	//Floor with lighting
 	auto loadFloorVSTask = DX::ReadDataAsync(L"LightingVertexShader.cso");
 	auto loadFloorPSTask = DX::ReadDataAsync(L"LightingPixelShader.cso");
+	//Wolf with lighting
+	auto loadWolfVSTask = DX::ReadDataAsync(L"LightingVertexShader.cso");
+	auto loadWolfPSTask = DX::ReadDataAsync(L"LightingPixelShader.cso");
+
 
 	// After the vertex shader file is loaded, create the shader and input layout.
 	auto createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData)
@@ -529,6 +565,20 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateInputLayout(floorVertexDesc, ARRAYSIZE(floorVertexDesc), &fileData[0], fileData.size(), &m_floorInputLayout));
 	});
 
+	auto createWolfVSTask = loadFloorVSTask.then([this](const std::vector<byte>& fileData)
+	{
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateVertexShader(&fileData[0], fileData.size(), nullptr, &m_wolfVertexShader));
+
+		static const D3D11_INPUT_ELEMENT_DESC wolfVertexDesc[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "UV", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateInputLayout(wolfVertexDesc, ARRAYSIZE(wolfVertexDesc), &fileData[0], fileData.size(), &m_wolfInputLayout));
+	});
+
 	// After the pixel shader file is loaded, create the shader and constant buffer.
 	auto createPSTask = loadPSTask.then([this](const std::vector<byte>& fileData)
 	{
@@ -547,6 +597,16 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 
 
 	});
+
+	auto createWolfPSTask = loadFloorPSTask.then([this](const std::vector<byte>& fileData)
+	{
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreatePixelShader(&fileData[0], fileData.size(), nullptr, &m_wolfPixelShader));
+
+		CD3D11_BUFFER_DESC wolfConstantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&wolfConstantBufferDesc, nullptr, &m_wolfConstantBuffer));
+
+	});
+
 
 	//----------------CREATING SKYBOX-------------------//
 
@@ -819,26 +879,26 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 			//Front Face
 			/*0*/{ XMFLOAT3(-10.0f,  -7.0f,   -10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*1*/{ XMFLOAT3( 10.0f,  -7.0f,   -10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*2*/{ XMFLOAT3(-10.0f,  -10.0f,  -10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*3*/{ XMFLOAT3( 10.0f,  -10.0f,  -10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*2*/{ XMFLOAT3(-10.0f,  -11.0f,  -10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*3*/{ XMFLOAT3( 10.0f,  -11.0f,  -10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 	
 			//Right Face
 			/*4*/{ XMFLOAT3(10.0f, -7.0f,   -10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*5*/{ XMFLOAT3(10.0f, -7.0f,    10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*6*/{ XMFLOAT3(10.0f, -10.0f,  -10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*7*/{ XMFLOAT3(10.0f, -10.0f,   10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*6*/{ XMFLOAT3(10.0f, -11.0f,  -10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*7*/{ XMFLOAT3(10.0f, -11.0f,   10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 	
 			//Back Face
 			/*8*/{ XMFLOAT3(  10.0f,   -7.0f,   10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*9*/{ XMFLOAT3( -10.0f,   -7.0f,   10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*10*/{ XMFLOAT3( 10.0f,   -10.0f,  10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*11*/{ XMFLOAT3(-10.0f,   -10.0f,  10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*10*/{ XMFLOAT3( 10.0f,   -11.0f,  10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*11*/{ XMFLOAT3(-10.0f,   -11.0f,  10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 	
 			//Left Face
 			/*12*/{ XMFLOAT3(-10.0f, -7.0f,   10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 			/*13*/{ XMFLOAT3(-10.0f, -7.0f,  -10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*14*/{ XMFLOAT3(-10.0f, -10.0f,  10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*15*/{ XMFLOAT3(-10.0f, -10.0f, -10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*14*/{ XMFLOAT3(-10.0f, -11.0f,  10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*15*/{ XMFLOAT3(-10.0f, -11.0f, -10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 	
 			//Top Face
 			/*16*/{ XMFLOAT3(-10.0f,  -7.0f,   10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
@@ -847,10 +907,10 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 			/*19*/{ XMFLOAT3( 10.0f,  -7.0f,  -10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 	
 			//Bottom Face
-			/*20*/{ XMFLOAT3(-10.0f,  -10.0f,  -10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*21*/{ XMFLOAT3( 10.0f,  -10.0f,  -10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*22*/{ XMFLOAT3(-10.0f,  -10.0f,   10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*23*/{ XMFLOAT3( 10.0f,  -10.0f,   10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*20*/{ XMFLOAT3(-10.0f,  -11.0f,  -10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
+			/*21*/{ XMFLOAT3( 10.0f,  -11.0f,  -10.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
+			/*22*/{ XMFLOAT3(-10.0f,  -11.0f,   10.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
+			/*23*/{ XMFLOAT3( 10.0f,  -11.0f,   10.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
 
 		};
 	
@@ -910,40 +970,40 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		static const VertexPositionUVNormal cubeUV[] =
 		{
 			//Front Face
-			/*0*/{ XMFLOAT3(-0.5f, 1.0f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*1*/{ XMFLOAT3(0.5f, 1.0f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*2*/{ XMFLOAT3(-0.5f, 0.0f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*3*/{ XMFLOAT3(0.5f, 0.0f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*0*/{ XMFLOAT3(-1.0f,  1.0f,   -1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*1*/{ XMFLOAT3(1.0f,  1.0f,   -1.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*2*/{ XMFLOAT3(-1.0f,  -1.0f,  -1.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*3*/{ XMFLOAT3(1.0f,  -1.0f,  -1.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 
 			//Right Face
-			/*4*/{ XMFLOAT3(0.5f, 1.0f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*5*/{ XMFLOAT3(0.5f, 1.0f, 0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*6*/{ XMFLOAT3(0.5f, 0.0f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*7*/{ XMFLOAT3(0.5f, 0.0f, 0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*4*/{ XMFLOAT3(1.0f, 1.0f,   -1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*5*/{ XMFLOAT3(1.0f, 1.0f,    1.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*6*/{ XMFLOAT3(1.0f, -1.0f,  -1.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*7*/{ XMFLOAT3(1.0f, -1.0f,   1.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 
 			//Back Face
-			/*8*/{ XMFLOAT3(0.5f, 1.0f, 0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*9*/{ XMFLOAT3(-0.5f, 1.0f, 0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*10*/{ XMFLOAT3(0.5f, 0.0f, 0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*11*/{ XMFLOAT3(-0.5f, 0.0f, 0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*8*/{ XMFLOAT3(1.0f,   1.0f,   1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*9*/{ XMFLOAT3(-1.0f,   1.0f,   1.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*10*/{ XMFLOAT3(1.0f,   -1.0f,  1.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*11*/{ XMFLOAT3(-1.0f,   -1.0f,  1.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 
 			//Left Face
-			/*12*/{ XMFLOAT3(-0.5f, 1.0f, 0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*13*/{ XMFLOAT3(-0.5f, 1.0f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*14*/{ XMFLOAT3(-0.5f, 0.0f, 0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*15*/{ XMFLOAT3(-0.5f, 0.0f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*12*/{ XMFLOAT3(-1.0f, 1.0f,   1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*13*/{ XMFLOAT3(-1.0f, 1.0f,  -1.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*14*/{ XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*15*/{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 
 			//Top Face
-			/*16*/{ XMFLOAT3(-0.5f, 1.0f, 0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*17*/{ XMFLOAT3(0.5f, 1.0f, 0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*18*/{ XMFLOAT3(-0.5f, 1.0f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*19*/{ XMFLOAT3(0.5f, 1.0f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*16*/{ XMFLOAT3(-1.0f,  1.0f,   1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*17*/{ XMFLOAT3(1.0f,  1.0f,   1.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*18*/{ XMFLOAT3(-1.0f, 1.0f,  -1.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*19*/{ XMFLOAT3(1.0f,  1.0f,  -1.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
 
 			//Bottom Face
-			/*20*/{ XMFLOAT3(-0.5f, 0.0f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*21*/{ XMFLOAT3(0.5f, 0.0f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*22*/{ XMFLOAT3(-0.5f, 0.0f, 0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
-			/*23*/{ XMFLOAT3(0.5f, 0.0f, 0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+			/*20*/{ XMFLOAT3(-1.0f,  -1.0f,  -1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
+			/*21*/{ XMFLOAT3(1.0f,  -1.0f,  -1.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
+			/*22*/{ XMFLOAT3(-1.0f,  -1.0f,   1.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
+			/*23*/{ XMFLOAT3(1.0f,  -1.0f,   1.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
 		};
 
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
@@ -974,6 +1034,15 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 			23,22,20,
 		};
 
+		D3D11_SAMPLER_DESC sampleDesc;
+		ZeroMemory(&sampleDesc, sizeof(sampleDesc));
+		sampleDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		sampleDesc.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
+		sampleDesc.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
+		sampleDesc.AddressW = D3D11_TEXTURE_ADDRESS_MIRROR;
+
+		DX::ThrowIfFailed(CreateDDSTextureFromFile(m_deviceResources->GetD3DDevice(), L"Assets/lava.dds", NULL, m_cubeResourceView.GetAddressOf()));
+
 		m_indexCount = ARRAYSIZE(cubeIndices);
 
 		D3D11_SUBRESOURCE_DATA indexBufferData = { 0 };
@@ -985,8 +1054,11 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 	});
 
 
-	//start FLOOR
+	//start castle
 	bool loadFloor = loadObject("Assets/icyCastle.obj", m_floorVerticies, m_floorIndicies);
+
+	
+
 
 	D3D11_SUBRESOURCE_DATA floorVertBuffData = { 0 };
 
@@ -1013,7 +1085,37 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 
 	DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateSamplerState(&floorTextureSampler, &m_floorSampleState));
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_deviceResources->GetD3DDevice(), L"Assets/iceCastleTexture.dds", NULL, &m_floorResourceView));
-	//END FLOOR
+	//END Castle
+
+	//Start Wolf
+	bool loadWolf = loadObject("Assets/Howling_Wolf.obj", m_wolfVerticies, m_wolfIndicies);
+
+	D3D11_SUBRESOURCE_DATA wolfVertBuffData = { 0 };
+
+	wolfVertBuffData.pSysMem = m_wolfVerticies.data();
+	wolfVertBuffData.SysMemPitch = 0;
+	wolfVertBuffData.SysMemSlicePitch = 0;
+	CD3D11_BUFFER_DESC wolfVertBuffDesc(sizeof(VertexPositionUVNormal) * m_wolfVerticies.size(), D3D11_BIND_VERTEX_BUFFER);
+	DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&wolfVertBuffDesc, &wolfVertBuffData, &m_wolfVertBuffer));
+
+	D3D11_SUBRESOURCE_DATA wolfIndexBuffData = { 0 };
+
+	wolfIndexBuffData.pSysMem = m_wolfIndicies.data();
+	wolfIndexBuffData.SysMemPitch = 0;
+	wolfIndexBuffData.SysMemSlicePitch = 0;
+	CD3D11_BUFFER_DESC wolfIndexBuffDesc(sizeof(unsigned int) * m_wolfIndicies.size(), D3D11_BIND_INDEX_BUFFER);
+	DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&wolfIndexBuffDesc, &wolfIndexBuffData, &m_wolfIndexBuffer));
+
+	D3D11_SAMPLER_DESC wolfTextureSampler;
+	ZeroMemory(&wolfTextureSampler, sizeof(wolfTextureSampler));
+	wolfTextureSampler.Filter = D3D11_FILTER_MIN_LINEAR_MAG_POINT_MIP_LINEAR;
+	wolfTextureSampler.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
+	wolfTextureSampler.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
+	wolfTextureSampler.AddressW = D3D11_TEXTURE_ADDRESS_MIRROR;
+
+	DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateSamplerState(&wolfTextureSampler, &m_wolfSampleState));
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(m_deviceResources->GetD3DDevice(), L"Assets/wolfBlack.dds", NULL, &m_wolfResourceView));
+	//End Wolf
 
 	// Once the cube is loaded, the object is ready to be rendered.
 	createCubeTask.then([this]()
@@ -1036,6 +1138,9 @@ void Sample3DSceneRenderer::ReleaseDeviceDependentResources(void)
 	m_floorVertBuffer.Reset();
 	m_floorConstantBuffer.Reset();
 
+	//wolf
+	m_wolfVertBuffer.Reset();
+	m_wolfConstantBuffer.Reset();
 
 	//memory cleanup
 	delete m_vp1;

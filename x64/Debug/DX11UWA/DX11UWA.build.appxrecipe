@@ -30,6 +30,9 @@
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\iceCastleTexture.dds">
       <PackagePath>Assets\iceCastleTexture.dds</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\lava.dds">
+      <PackagePath>Assets\lava.dds</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\SkyboxOcean.dds">
       <PackagePath>Assets\SkyboxOcean.dds</PackagePath>
     </AppxPackagedFile>

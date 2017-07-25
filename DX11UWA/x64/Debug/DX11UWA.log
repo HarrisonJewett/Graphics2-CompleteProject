@@ -1,6 +1,12 @@
-﻿E:\Projects\Round 2\Project\DX11UWA\DX11UWA\LightingPixelShader.hlsl(105,8-49): warning X3206: implicit truncation of vector type
-E:\Projects\Round 2\Project\DX11UWA\DX11UWA\LightingPixelShader.hlsl(120,22-52): warning X3206: 'Sample': implicit truncation of vector type
-  
-  compilation object save succeeded; see E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingPixelShader.cso
+﻿  Sample3DSceneRenderer.cpp
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(399): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(416): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(493): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(733): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(734): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(1068): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(1076): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(1098): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(1106): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
   DX11UWA.vcxproj -> E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe
   DX11UWA.vcxproj -> E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.pdb (Partial PDB)
