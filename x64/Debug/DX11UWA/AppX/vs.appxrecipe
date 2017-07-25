@@ -22,13 +22,13 @@
     <AppXManifest Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-07-25T19:25:05.130</Modified>
+      <Modified>2017-07-25T19:43:52.029</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe">
       <PackagePath>DX11UWA.exe</PackagePath>
-      <Modified>2017-07-25T19:25:04.770</Modified>
+      <Modified>2017-07-25T19:43:51.550</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.winmd">
       <PackagePath>DX11UWA.winmd</PackagePath>
@@ -116,6 +116,14 @@
       <PackagePath>FloorVertexShader.cso</PackagePath>
       <Modified>2017-07-25T19:06:10.561</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\InnerPixelShader.cso">
+      <PackagePath>InnerPixelShader.cso</PackagePath>
+      <Modified>2017-07-25T19:43:47.355</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\InnerVertexShader.cso">
+      <PackagePath>InnerVertexShader.cso</PackagePath>
+      <Modified>2017-07-25T19:43:47.463</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingPixelShader.cso">
       <PackagePath>LightingPixelShader.cso</PackagePath>
       <Modified>2017-07-25T19:06:10.667</Modified>
@@ -134,7 +142,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2017-07-25T19:25:05.065</Modified>
+      <Modified>2017-07-25T19:43:51.858</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

@@ -433,7 +433,7 @@ void Sample3DSceneRenderer::postRender(ID3D11DeviceContext3 * context)
 
 	//Change this.
 	//Need to draw to an offscreen texture, then draw the box, then put the texture on it. I think
-	if (false)
+	if (true)
 	{
 		ID3D11RenderTargetView *const target[1] = { m_deviceResources->GetBackBufferRenderTargetView() };
 
@@ -462,7 +462,7 @@ void Sample3DSceneRenderer::postRender(ID3D11DeviceContext3 * context)
 
 		//UV Cube
 		XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
-		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixScaling(1.0f, 1.0f, 1.0f), XMMatrixTranslation(5.0f, 6.5f, 2.0f))));
 		context->UpdateSubresource1(m_constantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
 		stride = sizeof(VertexPositionUVNormal);
 		offset = 0;
@@ -473,11 +473,14 @@ void Sample3DSceneRenderer::postRender(ID3D11DeviceContext3 * context)
 		context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
 		context->VSSetConstantBuffers1(0, 1, m_constantBuffer.GetAddressOf(), nullptr, nullptr);
 		context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+		context->PSSetShaderResources(0, 1, m_cubeResourceView.GetAddressOf());
 		context->DrawIndexed(m_indexCount, 0, 0);
 
 		//Floor / ice castle
-		XMStoreFloat4x4(&m_floorConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(0.0f, -2.0f, 2.0f))));
+		XMStoreFloat4x4(&m_floorConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(5.0f, -2.0f, 2.0f))));
+
 		XMStoreFloat4x4(&m_floorConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
+
 		context->UpdateSubresource1(m_floorConstantBuffer.Get(), 0, NULL, &m_floorConstantBufferData, 0, 0, 0);
 		stride = sizeof(VertexPositionUVNormal);
 		offset = 0;
@@ -491,6 +494,38 @@ void Sample3DSceneRenderer::postRender(ID3D11DeviceContext3 * context)
 		context->PSSetShaderResources(0, 1, m_floorResourceView.GetAddressOf());
 		context->PSSetSamplers(0, 1, m_floorSampleState.GetAddressOf());
 		context->DrawIndexed(m_floorIndicies.size(), 0, 0);
+
+		//Wolf
+		XMStoreFloat4x4(&m_wolfConstantBufferData.model, XMMatrixTranspose(XMMatrixMultiply(XMMatrixRotationY(3.14f), XMMatrixTranslation(1.0f, 5.0f, -2.0f))));
+		XMStoreFloat4x4(&m_wolfConstantBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
+		context->UpdateSubresource1(m_wolfConstantBuffer.Get(), 0, NULL, &m_wolfConstantBufferData, 0, 0, 0);
+		stride = sizeof(VertexPositionUVNormal);
+		offset = 0;
+		context->IASetVertexBuffers(0, 1, m_wolfVertBuffer.GetAddressOf(), &stride, &offset);
+		context->IASetIndexBuffer(m_wolfIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		context->IASetInputLayout(m_wolfInputLayout.Get());
+		context->VSSetShader(m_wolfVertexShader.Get(), nullptr, 0);
+		context->VSSetConstantBuffers1(0, 1, m_wolfConstantBuffer.GetAddressOf(), nullptr, nullptr);
+		context->PSSetShader(m_wolfPixelShader.Get(), nullptr, 0);
+		context->PSSetShaderResources(0, 1, m_wolfResourceView.GetAddressOf());
+		context->PSSetSamplers(0, 1, m_wolfSampleState.GetAddressOf());
+		context->DrawIndexed(m_wolfIndicies.size(), 0, 0);
+
+		//Stone floor
+		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixScaling(1.0f, 0.2f, 1.0f));
+		context->UpdateSubresource1(m_stoneConstantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
+		stride = sizeof(VertexPositionUVNormal);
+		offset = 0;
+		context->IASetVertexBuffers(0, 1, m_stoneVertexBuffer.GetAddressOf(), &stride, &offset);
+		context->IASetIndexBuffer(m_stoneIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		context->IASetInputLayout(m_stoneInput.Get());
+		context->VSSetShader(m_stoneVS.Get(), nullptr, 0);
+		context->VSSetConstantBuffers1(0, 1, m_stoneConstantBuffer.GetAddressOf(), nullptr, nullptr);
+		context->PSSetShader(m_stonePS.Get(), nullptr, 0);
+		context->PSSetShaderResources(0, 1, m_stoneResourceView.GetAddressOf());
+		context->DrawIndexed(m_stoneICount, 0, 0);
 
 		//Scene within a scene
 		context->OMSetRenderTargets(1, target, m_deviceResources->GetDepthStencilView());
@@ -700,6 +735,8 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 
 	//-----------------Scene within a Scene-------------//
 	
+	auto loadInnerVSTask = DX::ReadDataAsync(L"InnerVertexShader.cso");
+
 	auto createInnerSceneVSTask = loadVSTask.then([this](const std::vector<byte>& fileData)
 	{
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateVertexShader(&fileData[0], fileData.size(), nullptr, &m_innerSceneVertexShader));
@@ -714,6 +751,8 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateInputLayout(vertexDesc, ARRAYSIZE(vertexDesc), &fileData[0], fileData.size(), &m_innerSceneInputLayout));
 	});
 	
+	auto loadInnerPSTask = DX::ReadDataAsync(L"InnerPixelShader.cso");
+
 	auto createInnerScenePSTask = loadPSTask.then([this](const std::vector<byte>& fileData)
 	{
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreatePixelShader(&fileData[0], fileData.size(), nullptr, &m_innerScenePixelShader));
@@ -1057,11 +1096,7 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 	//start castle
 	bool loadFloor = loadObject("Assets/icyCastle.obj", m_floorVerticies, m_floorIndicies);
 
-	
-
-
 	D3D11_SUBRESOURCE_DATA floorVertBuffData = { 0 };
-
 	floorVertBuffData.pSysMem = m_floorVerticies.data();
 	floorVertBuffData.SysMemPitch = 0;
 	floorVertBuffData.SysMemSlicePitch = 0;

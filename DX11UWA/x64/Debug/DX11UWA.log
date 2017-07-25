@@ -1,12 +1,19 @@
-﻿  Sample3DSceneRenderer.cpp
+﻿E:\Projects\Round 2\Project\DX11UWA\DX11UWA\InnerPixelShader.hlsl(14,16-42): warning X3206: 'Sample': implicit truncation of vector type
+E:\Projects\Round 2\Project\DX11UWA\DX11UWA\InnerPixelShader.hlsl(17,18-30): warning X3081: comma expression used where a vector constructor may have been intended
+E:\Projects\Round 2\Project\DX11UWA\DX11UWA\InnerPixelShader.hlsl(17,18-42): warning X3081: potentially unintended use of a comma expression in a variable initializer
+  
+  compilation object save succeeded; see E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\InnerPixelShader.cso
+  compilation object save succeeded; see E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\InnerVertexShader.cso
+  Sample3DSceneRenderer.cpp
 e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(399): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
 e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(416): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(493): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(733): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(734): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(1068): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(1076): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(1098): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(1106): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(496): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(513): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(772): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(773): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(1103): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(1111): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(1133): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+e:\projects\round 2\project\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(1141): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
   DX11UWA.vcxproj -> E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe
   DX11UWA.vcxproj -> E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.pdb (Partial PDB)
