@@ -9,103 +9,103 @@
     <SolutionConfiguration>Debug|x64</SolutionConfiguration>
     <PackageArchitecture>x64</PackageArchitecture>
     <PackageIdentityName>54014835-9bba-472b-bf12-b7d15c2fdce2</PackageIdentityName>
-    <IntermediateOutputPath>E:\Projects\Round 2\Project\DX11UWA\DX11UWA\x64\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\x64\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <AppXManifest Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\AppxManifest.xml">
+    <AppXManifest Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe">
       <PackagePath>DX11UWA.exe</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.winmd">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.winmd">
       <PackagePath>DX11UWA.winmd</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\GroundTexture.dds">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\GroundTexture.dds">
       <PackagePath>Assets\GroundTexture.dds</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\iceCastleTexture.dds">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\iceCastleTexture.dds">
       <PackagePath>Assets\iceCastleTexture.dds</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\lava.dds">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\lava.dds">
       <PackagePath>Assets\lava.dds</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\SkyboxOcean.dds">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\SkyboxOcean.dds">
       <PackagePath>Assets\SkyboxOcean.dds</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\wolfBlack.dds">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\wolfBlack.dds">
       <PackagePath>Assets\wolfBlack.dds</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\LockScreenLogo.scale-200.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\SplashScreen.scale-200.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\SplashScreen.scale-200.png">
       <PackagePath>Assets\SplashScreen.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Square150x150Logo.scale-200.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\Square150x150Logo.scale-200.png">
       <PackagePath>Assets\Square150x150Logo.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Square44x44Logo.scale-200.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\Square44x44Logo.scale-200.png">
       <PackagePath>Assets\Square44x44Logo.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
       <PackagePath>Assets\Square44x44Logo.targetsize-24_altform-unplated.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\StoreLogo.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\StoreLogo.png">
       <PackagePath>Assets\StoreLogo.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Wide310x150Logo.scale-200.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\Wide310x150Logo.scale-200.png">
       <PackagePath>Assets\Wide310x150Logo.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Ground.obj">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\Ground.obj">
       <PackagePath>Assets\Ground.obj</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Howling_Wolf.obj">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\Howling_Wolf.obj">
       <PackagePath>Assets\Howling_Wolf.obj</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\icyCastle.obj">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\icyCastle.obj">
       <PackagePath>Assets\icyCastle.obj</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SamplePixelShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SamplePixelShader.cso">
       <PackagePath>SamplePixelShader.cso</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SampleVertexShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SampleVertexShader.cso">
       <PackagePath>SampleVertexShader.cso</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\FloorPixelShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\FloorPixelShader.cso">
       <PackagePath>FloorPixelShader.cso</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\FloorVertexShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\FloorVertexShader.cso">
       <PackagePath>FloorVertexShader.cso</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\InnerPixelShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\InnerPixelShader.cso">
       <PackagePath>InnerPixelShader.cso</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\InnerVertexShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\InnerVertexShader.cso">
       <PackagePath>InnerVertexShader.cso</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingPixelShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingPixelShader.cso">
       <PackagePath>LightingPixelShader.cso</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingVertexShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingVertexShader.cso">
       <PackagePath>LightingVertexShader.cso</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyPixelShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyPixelShader.cso">
       <PackagePath>SkyPixelShader.cso</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyVertexShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyVertexShader.cso">
       <PackagePath>SkyVertexShader.cso</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\resources.pri">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\resources.pri">
       <PackagePath>resources.pri</PackagePath>
     </AppxPackagedFile>
   </ItemGroup>

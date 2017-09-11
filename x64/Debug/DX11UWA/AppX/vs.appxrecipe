@@ -9,7 +9,7 @@
     <SolutionConfiguration>Debug|x64</SolutionConfiguration>
     <PackageArchitecture>x64</PackageArchitecture>
     <PackageIdentityName>54014835-9bba-472b-bf12-b7d15c2fdce2</PackageIdentityName>
-    <IntermediateOutputPath>E:\Projects\Round 2\Project\DX11UWA\DX11UWA\x64\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\x64\Debug\</IntermediateOutputPath>
     <RegisteredManifestChecksum>E16B0215E45CC6CC3035D9075A9E551D38EFA09B62BFF55CB3DC8613F483D717</RegisteredManifestChecksum>
     <RegisteredPackageMoniker>54014835-9bba-472b-bf12-b7d15c2fdce2_1.0.0.0_x64__m2mhzkw71ghyc</RegisteredPackageMoniker>
     <RegisteredUserModeAppID>54014835-9bba-472b-bf12-b7d15c2fdce2_m2mhzkw71ghyc!App</RegisteredUserModeAppID>
@@ -19,128 +19,128 @@
     <JitOptimizationSuppressed>True</JitOptimizationSuppressed>
   </PropertyGroup>
   <ItemGroup>
-    <AppXManifest Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\AppxManifest.xml">
+    <AppXManifest Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
       <Modified>2017-07-25T19:43:52.029</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe">
       <PackagePath>DX11UWA.exe</PackagePath>
-      <Modified>2017-07-25T20:44:04.792</Modified>
+      <Modified>2017-08-14T22:27:54.404</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.winmd">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\DX11UWA.winmd">
       <PackagePath>DX11UWA.winmd</PackagePath>
       <Modified>2017-07-25T19:06:19.042</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\GroundTexture.dds">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\GroundTexture.dds">
       <PackagePath>Assets\GroundTexture.dds</PackagePath>
       <Modified>2017-07-18T21:45:12.893</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\iceCastleTexture.dds">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\iceCastleTexture.dds">
       <PackagePath>Assets\iceCastleTexture.dds</PackagePath>
       <Modified>2017-06-22T22:37:33.862</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\lava.dds">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\lava.dds">
       <PackagePath>Assets\lava.dds</PackagePath>
       <Modified>2017-07-25T19:24:28.236</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\SkyboxOcean.dds">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\SkyboxOcean.dds">
       <PackagePath>Assets\SkyboxOcean.dds</PackagePath>
       <Modified>2017-06-21T03:44:36.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\wolfBlack.dds">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\wolfBlack.dds">
       <PackagePath>Assets\wolfBlack.dds</PackagePath>
       <Modified>2017-06-21T03:44:36.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\LockScreenLogo.scale-200.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
       <Modified>2015-09-20T21:20:42.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\SplashScreen.scale-200.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\SplashScreen.scale-200.png">
       <PackagePath>Assets\SplashScreen.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
       <Modified>2015-09-20T21:20:42.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Square150x150Logo.scale-200.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\Square150x150Logo.scale-200.png">
       <PackagePath>Assets\Square150x150Logo.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
       <Modified>2015-09-20T21:20:42.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Square44x44Logo.scale-200.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\Square44x44Logo.scale-200.png">
       <PackagePath>Assets\Square44x44Logo.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
       <Modified>2015-09-20T21:20:42.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
       <PackagePath>Assets\Square44x44Logo.targetsize-24_altform-unplated.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
       <Modified>2015-09-20T21:20:42.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\StoreLogo.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\StoreLogo.png">
       <PackagePath>Assets\StoreLogo.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
       <Modified>2015-09-20T21:20:42.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Wide310x150Logo.scale-200.png">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\Wide310x150Logo.scale-200.png">
       <PackagePath>Assets\Wide310x150Logo.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
       <Modified>2015-09-20T21:20:42.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Ground.obj">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\Ground.obj">
       <PackagePath>Assets\Ground.obj</PackagePath>
       <Modified>2017-07-11T23:54:36.266</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\Howling_Wolf.obj">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\Howling_Wolf.obj">
       <PackagePath>Assets\Howling_Wolf.obj</PackagePath>
       <Modified>2017-06-21T03:44:36.000</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\DX11UWA\Assets\icyCastle.obj">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\DX11UWA\Assets\icyCastle.obj">
       <PackagePath>Assets\icyCastle.obj</PackagePath>
       <Modified>2017-06-22T22:37:33.879</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SamplePixelShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SamplePixelShader.cso">
       <PackagePath>SamplePixelShader.cso</PackagePath>
-      <Modified>2017-07-25T19:06:10.148</Modified>
+      <Modified>2017-08-14T22:27:46.184</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SampleVertexShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SampleVertexShader.cso">
       <PackagePath>SampleVertexShader.cso</PackagePath>
-      <Modified>2017-07-25T19:06:10.297</Modified>
+      <Modified>2017-08-14T22:27:46.318</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\FloorPixelShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\FloorPixelShader.cso">
       <PackagePath>FloorPixelShader.cso</PackagePath>
-      <Modified>2017-07-25T19:06:10.423</Modified>
+      <Modified>2017-08-14T22:27:46.431</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\FloorVertexShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\FloorVertexShader.cso">
       <PackagePath>FloorVertexShader.cso</PackagePath>
-      <Modified>2017-07-25T19:06:10.561</Modified>
+      <Modified>2017-08-14T22:27:46.546</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\InnerPixelShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\InnerPixelShader.cso">
       <PackagePath>InnerPixelShader.cso</PackagePath>
-      <Modified>2017-07-25T19:43:47.355</Modified>
+      <Modified>2017-08-14T22:27:46.639</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\InnerVertexShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\InnerVertexShader.cso">
       <PackagePath>InnerVertexShader.cso</PackagePath>
-      <Modified>2017-07-25T19:43:47.463</Modified>
+      <Modified>2017-08-14T22:27:46.759</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingPixelShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingPixelShader.cso">
       <PackagePath>LightingPixelShader.cso</PackagePath>
-      <Modified>2017-07-25T19:06:10.667</Modified>
+      <Modified>2017-08-14T22:27:46.857</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingVertexShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\LightingVertexShader.cso">
       <PackagePath>LightingVertexShader.cso</PackagePath>
-      <Modified>2017-07-25T19:06:10.804</Modified>
+      <Modified>2017-08-14T22:27:46.957</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyPixelShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyPixelShader.cso">
       <PackagePath>SkyPixelShader.cso</PackagePath>
-      <Modified>2017-07-25T19:06:10.985</Modified>
+      <Modified>2017-08-14T22:27:47.058</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyVertexShader.cso">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\SkyVertexShader.cso">
       <PackagePath>SkyVertexShader.cso</PackagePath>
-      <Modified>2017-07-25T19:06:11.217</Modified>
+      <Modified>2017-08-14T22:27:47.183</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Projects\Round 2\Project\DX11UWA\x64\Debug\DX11UWA\resources.pri">
+    <AppxPackagedFile Include="E:\Projects\z_Finished\Graphics 2 Round 2\Project\DX11UWA\x64\Debug\DX11UWA\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <Modified>2017-07-25T19:43:51.858</Modified>
     </AppxPackagedFile>
